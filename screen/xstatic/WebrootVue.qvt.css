@@ -219,3 +219,5 @@ ul.float-plain.condensed li { margin: 0 4px 0 0; padding: 4px; }
 .q-field--disabled .q-field__inner {cursor: default;}
 .q-field--outlined.q-field--readonly .q-field__control:before {border-style: none;}
 .q-field--disabled .q-field__prepend, .q-field--disabled .q-field__append {display: none}
+
+.q-select .q-field__focusable-action{font-size: 14px} /*the size of clear icon in select*/
