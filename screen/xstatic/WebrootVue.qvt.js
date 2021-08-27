@@ -348,13 +348,13 @@ Vue.component('m-container-box', {
     // TODO: handle type better, have text color (use text- additional styles instead of Bootstrap to Quasar mapping), can collor the border too?
     template:
     '<q-card flat bordered class="q-ma-sm m-container-box">' +
-        '<q-card-actions @click.self="toggleBody" class="bg-grey-3" style="padding: 2px !important;">' +
+        '<q-card-actions @click.self="toggleBody" class="bg-grey-3">' +
             '<span v-if="title && title.length" @click="toggleBody" :class="\'text-\' + type">{{title}}</span>' +
             '<slot name="header"></slot>' +
             '<q-space></q-space>' +
             '<slot name="toolbar"></slot>' +
         '</q-card-actions>' +
-        '<q-card-section :class="{in:isBodyOpen}"><slot></slot></q-card-section>' +
+        '<q-card-section :class="{in:isBodyOpen}" style="padding:0px;"><slot></slot></q-card-section>' +
     '</q-card>',
     methods: { toggleBody: function() { this.isBodyOpen = !this.isBodyOpen; } }
 });
