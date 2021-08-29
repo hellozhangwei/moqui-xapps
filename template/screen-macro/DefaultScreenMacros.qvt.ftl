@@ -1401,7 +1401,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
     </#if>
 
     <#if !listHasContent>
-      <tr><td colspan="${numColumns}" class="text-grey">No Result</td></tr>
+      <tr><td colspan="${numColumns}" class="text-grey">${ec.getL10n().localize("No results found")}</td></tr>
     </#if>
 
     <#-- end/footer -->
@@ -2078,7 +2078,7 @@ a => A, d => D, y => Y
                 <q-checkbox class="on-left" size="xs" name="${curFieldName}_not" label="${ec.getL10n().localize("Not")}"<#if ownerForm?has_content> form="${ownerForm}"</#if><#rt>
                     <#t><#if fieldsJsName?has_content> true-value="Y" false-value="N" v-model="${fieldsJsName}.${curFieldName}_not"<#else>
                     <#t> value="Y"<#if ec.getWeb().parameters.get(curFieldName + "_not")! == "Y"> checked="checked"</#if></#if>></q-checkbox>
-                <q-select class="on-left" dense options-dense emit-value map-options name="${curFieldName}_op"<#if ownerForm?has_content> form="${ownerForm}"</#if><#rt>
+                <q-select class="on-left" dense outlined bg-color="white" options-dense emit-value map-options name="${curFieldName}_op"<#if ownerForm?has_content> form="${ownerForm}"</#if><#rt>
                     <#t><#if fieldsJsName?has_content> v-model="${fieldsJsName}.${curFieldName}_op"<#else> value="${ec.web.parameters.get(curFieldName + "_op")!defaultOperator!""}"</#if>
                     <#t> :options="[{value:'equals',label:'${ec.getL10n().localize("Equals")}'},{value:'like',label:'${ec.getL10n().localize("Like")}'},{value:'contains',label:'${ec.getL10n().localize("Contains")}'},{value:'begins',label:'${ec.getL10n().localize("Begins With")}'},{value:'empty',label:'${ec.getL10n().localize("Empty")}'}]"></q-select>
             </#if>
