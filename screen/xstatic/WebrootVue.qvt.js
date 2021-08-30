@@ -1044,7 +1044,7 @@ Vue.component('m-form-column-config', {
     props: { id:String, action:String, columnsInitial:{type:Array,required:true}, formLocation:{type:String,required:true}, findParameters:Object },
     data: function() { return { columns:moqui.deepCopy(this.columnsInitial) } },
     template:
-        '<m-form ref="mForm" :id="id" :action="action">' +
+        '<div class="bg-blue-2"><m-form ref="mForm" :id="id" :action="action">' +
             '<q-list v-for="(column, columnIdx) in columns" :key="column.id" bordered dense>' +
                 '<q-item-label header>{{column.label}}</q-item-label>' +
                 '<q-item v-for="(field, fieldIdx) in column.children" :key="field.id">' +
@@ -1053,7 +1053,7 @@ Vue.component('m-form-column-config', {
                     '</q-item-section>' +
                     '<q-item-section><q-item-label>{{field.label}}</q-item-label></q-item-section>' +
                     '<q-item-section v-if="columnIdx === 0" side>' +
-                        '<q-btn-dropdown dense outline no-caps label="Display"><q-list dense>' +
+                        '<q-btn-dropdown dense unelevated color="primary" no-caps label="Display"><q-list dense>' +
                             '<q-item v-for="(toColumn, toColumnIdx) in columns.slice(1)" :key="toColumn.id" clickable>' +
                                 '<q-item-section @click="moveToCol(columnIdx, fieldIdx, toColumnIdx+1)">{{toColumn.label}}</q-item-section></q-item>' +
                             '<q-item clickable>' +
@@ -1068,12 +1068,12 @@ Vue.component('m-form-column-config', {
                     '</q-btn-group></q-item-section>' +
                 '</q-item>' +
             '</q-list>' +
-            '<div class="q-my-md">' +
-                '<q-btn dense outline no-caps @click.prevent="saveColumns()" label="Save Changes"></q-btn>' +
-                '<q-btn dense outline no-caps @click.prevent="resetColumns()" label="Undo Changes"></q-btn>' +
-                '<q-btn dense outline no-caps @click.prevent="resetToDefault()" label="Reset to Default"></q-btn>' +
+            '<div class="q-py-md row justify-end">' +
+                '<q-btn dense unelevated color="primary" no-caps @click.prevent="saveColumns()" label="Save Changes"></q-btn>' +
+                '<q-btn dense unelevated color="primary" no-caps @click.prevent="resetColumns()" label="Undo Changes"></q-btn>' +
+                '<q-btn dense unelevated color="primary" no-caps @click.prevent="resetToDefault()" label="Reset to Default"></q-btn>' +
             '</div>' +
-        '</m-form>',
+        '</m-form></div>',
     methods: {
         moveInCol: function(columnIdx, fieldIdx, newFieldIdx) {
             var children = this.columns[columnIdx].children;
