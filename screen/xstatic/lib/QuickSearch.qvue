@@ -17,7 +17,7 @@ module.exports = {
     computed: {
         searchPath: function() {
             // return "/apps/marble/QuickSearch";
-            var navMenuList = this.$root.navMenuList;
+            /*var navMenuList = this.$root.navMenuList;
             if (!navMenuList || navMenuList.length < 2) return null;
             var curAppSubscreens = navMenuList[1].subscreens;
             if (!curAppSubscreens) return null;
@@ -25,7 +25,8 @@ module.exports = {
                 var curSs = curAppSubscreens[i];
                 if (curSs && curSs.name === 'QuickSearch') return curSs.path;
             }
-            return null;
+            return null;*/
+            return this.$root.basePath + '/QuickSearch';
         }
     }
 };
