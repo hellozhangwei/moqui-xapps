@@ -224,3 +224,5 @@ ul.float-plain.condensed li { margin: 0 4px 0 0; padding: 4px; }
 .td .q-field__label, .th .q-field__label{display: none}
 /*.q-field--outlined .q-field__control:before {border-style: none;}*/
 /*.q-field--outlined .q-field__control {border-radius: 2px;}*/
+
+.q-field--standard.q-field--dense .q-field__control {padding: 0 12px;}
