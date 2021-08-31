@@ -60,9 +60,9 @@ form.q-form { width:100%; }
 
 /* BEGIN q-field label move up to overlay outline */
 /* need small (6px) top margin so floating label does not overlap elements above, but to make all q-field consistent apply too all (not just .q-field--labeled.q-field--dense) */
-.q-field--dense { margin:6px 0 6px 0; }
+/*.q-field--dense { margin:6px 0 6px 0; }*/
 /* don't double margin for q-field within q-field */
-.q-field--dense .q-field--dense, .row .q-field--dense { margin:0; }
+/*.q-field--dense .q-field--dense, .row .q-field--dense { margin:0; }*/
 /* move field lable up to 'notch' in outline (like https://material.io/components/text-fields) */
 /*.q-field--dense .q-field__label { top:0; padding-left:4px; padding-right:4px; background-color:transparent; }*/
 .body--dark .q-field--dense .q-field__label { background-color:black; }
@@ -222,3 +222,4 @@ ul.float-plain.condensed li { margin: 0 4px 0 0; padding: 4px; }
 
 .q-select .q-field__focusable-action{font-size: 14px} /*the size of clear icon in select*/
 .td .q-field__label, .th .q-field__label{display: none}
+.q-field--outlined .q-field__control:before {border-style: none;}
