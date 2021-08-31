@@ -733,7 +733,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
                             <q-btn dense no-caps color="secondary" unelevated name="clearParameters" @click.prevent="formProps.clearForm" label="${ec.getL10n().localize("Clear Parameters")}"></q-btn>
 
                             <#-- Always add an orderByField to select one or more columns to order by -->
-                            <q-select dense outlined bg-color="white" options-dense multiple clearable emit-value map-options v-model="formProps.fields.orderByField"
+                            <q-select dense bg-color="blue-1" options-dense multiple clearable emit-value map-options v-model="formProps.fields.orderByField"
                                     name="orderByField" id="${headerFormId}_orderByField" stack-label label="${ec.getL10n().localize("Order By")}"
                                     :options="[${orderByOptions}]"></q-select>
                         </div>
@@ -1935,12 +1935,12 @@ a => A, d => D, y => Y
     <#assign fieldLabel><@fieldTitle .node?parent/></#assign>
     <#assign curTooltip = ec.getResource().expand(.node?parent["@tooltip"]!, "")>
 <div class="row">
-    <q-input dense outlined bg-color="white" stack-label label="${fieldLabel} From" name="${curFieldName}_from" id="${tlId}_from"<#if ownerForm?has_content> form="${ownerForm}"</#if><#rt>
+    <q-input dense bg-color="blue-1" stack-label label="${fieldLabel} From" name="${curFieldName}_from" id="${tlId}_from"<#if ownerForm?has_content> form="${ownerForm}"</#if><#rt>
             <#t> size="${.node.@size!"10"}"<#if .node.@maxlength?has_content> maxlength="${.node.@maxlength}"</#if>
             <#t><#if fieldsJsName?has_content> v-model="${fieldsJsName}.${curFieldName}_from"<#else> value="${ec.getContext().get(curFieldName + "_from")!?default(.node["@default-value-from"]!"")?html}"</#if>>
         <#if curTooltip?has_content><q-tooltip>${curTooltip}</q-tooltip></#if>
     </q-input>
-    <q-input class="q-pl-xs" dense outlined bg-color="white" stack-label label="${fieldLabel} Thru" name="${curFieldName}_thru" id="${tlId}_thru"<#if ownerForm?has_content> form="${ownerForm}"</#if><#rt>
+    <q-input class="q-pl-xs" dense bg-color="blue-1" stack-label label="${fieldLabel} Thru" name="${curFieldName}_thru" id="${tlId}_thru"<#if ownerForm?has_content> form="${ownerForm}"</#if><#rt>
             <#t> size="${.node.@size!"10"}"<#if .node.@maxlength?has_content> maxlength="${.node.@maxlength}"</#if>
             <#t><#if fieldsJsName?has_content> v-model="${fieldsJsName}.${curFieldName}_thru"<#else> value="${ec.getContext().get(curFieldName + "_thru")!?default(.node["@default-value-thru"]!"")?html}"</#if>>
         <#if curTooltip?has_content><q-tooltip>${curTooltip}</q-tooltip></#if>
@@ -1985,7 +1985,7 @@ a => A, d => D, y => Y
         <m-simple-mde<#if fieldsJsName?has_content> v-model="${fieldsJsName}.${name}"</#if>
                 :config="{ indentWithTabs:false, autoDownloadFontAwesome:false, autofocus:true, spellChecker:false }"></m-simple-mde>
     <#else>
-        <q-input type="textarea" dense outlined bg-color="white" <#if fieldLabel?has_content> stack-label label="${fieldLabel}"</#if> name="${name}" for="<@fieldId .node/>"
+        <q-input type="textarea" dense bg-color="blue-1" <#if fieldLabel?has_content> stack-label label="${fieldLabel}"</#if> name="${name}" for="<@fieldId .node/>"
                 <#t><#if fieldsJsName?has_content> v-model="${fieldsJsName}.${name}"</#if><#if formDisabled!> disable</#if>
                 <#t><#if .node["@cols"]?has_content> cols="${.node["@cols"]}"<#else> style="width:100%;"</#if>
                 <#t> rows="${.node["@rows"]!"3"}"<#if .node["@read-only"]! == "true"> readonly="readonly"</#if>
@@ -2067,7 +2067,7 @@ a => A, d => D, y => Y
     <#assign curFieldName><@fieldName .node/></#assign>
     <#assign fieldLabel><@fieldTitle .node?parent/></#assign>
     <#assign hideOptions = .node["@hide-options"]!"false">
-    <q-input dense outlined bg-color="white" <#if fieldLabel?has_content> stack-label label="${fieldLabel}"</#if> name="${curFieldName}"<#rt>
+    <q-input dense bg-color="blue-1" <#if fieldLabel?has_content> stack-label label="${fieldLabel}"</#if> name="${curFieldName}"<#rt>
             <#t> size="${.node.@size!"30"}"<#if .node.@maxlength?has_content> maxlength="${.node.@maxlength}"</#if> id="<@fieldId .node/>"
             <#t><#if ownerForm?has_content> form="${ownerForm}"</#if>
             <#t><#if fieldsJsName?has_content> v-model="${fieldsJsName}.${curFieldName}"<#else> value="${sri.getFieldValueString(.node)?html}"</#if>>
@@ -2079,7 +2079,7 @@ a => A, d => D, y => Y
                 <q-checkbox class="on-left" size="xs" name="${curFieldName}_not" label="${ec.getL10n().localize("Not")}"<#if ownerForm?has_content> form="${ownerForm}"</#if><#rt>
                     <#t><#if fieldsJsName?has_content> true-value="Y" false-value="N" v-model="${fieldsJsName}.${curFieldName}_not"<#else>
                     <#t> value="Y"<#if ec.getWeb().parameters.get(curFieldName + "_not")! == "Y"> checked="checked"</#if></#if>></q-checkbox>
-                <q-select class="on-left" dense outlined bg-color="white" options-dense emit-value map-options name="${curFieldName}_op"<#if ownerForm?has_content> form="${ownerForm}"</#if><#rt>
+                <q-select class="on-left" dense bg-color="blue-1" options-dense emit-value map-options name="${curFieldName}_op"<#if ownerForm?has_content> form="${ownerForm}"</#if><#rt>
                     <#t><#if fieldsJsName?has_content> v-model="${fieldsJsName}.${curFieldName}_op"<#else> value="${ec.web.parameters.get(curFieldName + "_op")!defaultOperator!""}"</#if>
                     <#t> :options="[{value:'equals',label:'${ec.getL10n().localize("Equals")}'},{value:'like',label:'${ec.getL10n().localize("Like")}'},{value:'contains',label:'${ec.getL10n().localize("Contains")}'},{value:'begins',label:'${ec.getL10n().localize("Begins With")}'},{value:'empty',label:'${ec.getL10n().localize("Empty")}'}]"></q-select>
             </#if>
