@@ -15,6 +15,7 @@ along with this software (see the LICENSE.md file). If not, see
 <#include "DefaultScreenMacros.any.ftl"/>
 <#macro getQuasarColor bootstrapColor><#if bootstrapColor == "success">positive<#elseif bootstrapColor == "danger">negative<#elseif bootstrapColor == "default"><#else>${bootstrapColor}</#if></#macro>
 <#macro getInputBgColor>blue-1</#macro>
+<#macro getFromBgColor>bg-blue-2</#macro>
 <#macro @element><p>=== Doing nothing for element ${.node?node_name}, not yet implemented. ===</p></#macro>
 
 <#macro screen><#recurse></#macro>
@@ -465,7 +466,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
     <#-- TODO: handle disabled forms, for Quasar looks like will need to disable each field, maybe with a property on m-form and m-form-link (and something else for plain form?) -->
     <#--  disabled="disabled"</#if> <#if urlInstance.disableLink> :disabled="true"</#if> -->
     <#if !skipStart>
-    <div class="q-pa-sm bg-blue-2<#if containerStyle?has_content> ${containerStyle}</#if>"><${formSingleType} name="${formSingleId}" id="${formSingleId}" action="${urlInstance.path}"<#if formSingleNode["@focus-field"]?has_content> focus-field="${formSingleNode["@focus-field"]}"</#if><#rt>
+    <div class="q-pa-sm <@getFromBgColor/><#if containerStyle?has_content> ${containerStyle}</#if>"><${formSingleType} name="${formSingleId}" id="${formSingleId}" action="${urlInstance.path}"<#if formSingleNode["@focus-field"]?has_content> focus-field="${formSingleNode["@focus-field"]}"</#if><#rt>
             <#t><#if formSingleNode["@body-parameters"]?has_content> :body-parameter-names="[<#list formSingleNode["@body-parameters"]?split(",") as bodyParm>'${bodyParm}'<#sep>,</#list>]"</#if>
             <#t><#if formSingleNode["@background-message"]?has_content> submit-message="${formSingleNode["@background-message"]?html}"</#if>
             <#t><#if formSingleNode["@background-reload-id"]?has_content> submit-reload-id="${formSingleNode["@background-reload-id"]}"</#if>
@@ -746,7 +747,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
                                 <#t>{value:'${"-" + caseInsensitive?string("^", "") + orderFieldName}',label:'${orderFieldTitle} ${ec.getL10n().localize("(Desc)")}'},
                             </#if>
                         </#if></#list>
-                    </#assign><div class="q-py-sm bg-blue-2">
+                    </#assign><div class="q-py-sm <@getFromBgColor/>">
                     <m-form-link name="${headerFormId}" id="${headerFormId}" action="${curUrlInstance.path}" v-slot:default="formProps"<#rt>
                             <#t> :fields-initial="${Static["org.moqui.util.WebUtilities"].fieldValuesEncodeHtmlJsSafe(sri.getFormListHeaderValues(formNode))}">
                         <div class="q-ma-md">
