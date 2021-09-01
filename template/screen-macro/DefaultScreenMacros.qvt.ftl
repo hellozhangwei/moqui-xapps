@@ -139,6 +139,8 @@ ${sri.renderSection(.node["@name"])}
 </#macro>
 
 <#macro "container-dialog">
+    <#assign buttonFlat = "">
+    <#if .node["@button-flat"]?has_content><#assign buttonFlat = .node["@button-flat"]></#if>
     <#-- TODO: somehow support at least fa icons backward compatible? won't be doing glyphicons anyway -->
     <#assign iconClass = "">
     <#if .node["@icon"]?has_content><#assign iconClass = .node["@icon"]></#if>
@@ -149,7 +151,8 @@ ${sri.renderSection(.node["@name"])}
         <#if !title?has_content><#assign title = buttonText></#if>
         <#assign cdDivId><@nodeId .node/></#assign>
         <m-container-dialog id="${cdDivId}" color="<@getQuasarColor ec.getResource().expandNoL10n(.node["@type"]!"primary", "")/>" width="${.node["@width"]!""}"
-                button-text="${buttonText}" button-class="${ec.getResource().expandNoL10n(.node["@button-style"]!"", "")}" title="${title}"<#if _openDialog! == cdDivId> :openDialog="true"</#if>>
+                button-text="${buttonText}" button-class="${ec.getResource().expandNoL10n(.node["@button-style"]!"", "")}" title="${title}"<#if _openDialog! == cdDivId> :openDialog="true"</#if>
+                <#if buttonFlat?has_content> :button-flat="${buttonFlat}"</#if>>
             <#recurse>
         </m-container-dialog>
     </#if>
@@ -160,6 +163,8 @@ ${sri.renderSection(.node["@name"])}
     <m-dynamic-container id="${dcDivId}" url="${urlInstance.passThroughSpecialParameters().pathWithParams}"></m-dynamic-container>
 </#macro>
 <#macro "dynamic-dialog">
+    <#assign buttonFlat = "">
+    <#if .node["@button-flat"]?has_content><#assign buttonFlat = .node["@button-flat"]></#if>
     <#assign iconClass = "fa fa-share">
     <#if .node["@icon"]?has_content><#assign iconClass = .node["@icon"]></#if>
     <#if .node["@condition"]?has_content><#assign conditionResult = ec.getResource().condition(.node["@condition"], "")><#else><#assign conditionResult = true></#if>
@@ -173,7 +178,9 @@ ${sri.renderSection(.node["@name"])}
             <q-btn disabled dense outline no-caps icon="open_in_new" label="${buttonText}" color="<@getQuasarColor ec.getResource().expandNoL10n(.node["@type"]!"primary", "")/>" class="${ec.getResource().expandNoL10n(.node["@button-style"]!"", "")}"></q-btn>
         <#else>
             <m-dynamic-dialog id="${ddDivId}" url="${urlInstance.urlWithParams}" color="<@getQuasarColor ec.getResource().expandNoL10n(.node["@type"]!"primary", "")/>" width="${.node["@width"]!""}"
-                    button-text="${buttonText}" button-class="${ec.getResource().expandNoL10n(.node["@button-style"]!"", "")}" title="${title}"<#if _openDialog! == ddDivId> :openDialog="true"</#if>></m-dynamic-dialog>
+                    button-text="${buttonText}" button-class="${ec.getResource().expandNoL10n(.node["@button-style"]!"", "")}" title="${title}"<#if _openDialog! == ddDivId> :openDialog="true"</#if>
+                    <#if buttonFlat?has_content> :button-flat="${buttonFlat}"</#if>>
+            </m-dynamic-dialog>
         </#if>
         <#-- used to use afterFormText for m-dynamic-dialog inside another form, needed now?
         <#assign afterFormText>
@@ -231,6 +238,8 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
     </#if>
 </#macro>
 <#macro linkFormLink linkNode linkFormId linkText urlInstance>
+    <#assign buttonFlat = "">
+    <#if linkNode["@button-flat"]?has_content><#assign buttonFlat = linkNode["@button-flat"]></#if>
     <#assign iconClass = linkNode["@icon"]!>
     <#if !iconClass?has_content && linkNode["@text"]?has_content><#assign iconClass = sri.getThemeIconClass(linkNode["@text"])!></#if>
     <#assign iconClass = ec.getResource().expandNoL10n(iconClass!, "")/>
@@ -244,7 +253,9 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
 
     <#if urlInstance.disableLink>
         <span>
-            <q-btn dense no-caps disabled unelevated <#if linkNode["@link-type"]! != "anchor" && linkNode["@link-type"]! != "hidden-form-link"> <#else>flat</#if><#rt>
+            <q-btn dense no-caps disabled unelevated <#rt>
+                    <#--<#if linkNode["@link-type"]! != "anchor" && linkNode["@link-type"]! != "hidden-form-link"> <#else>flat</#if>-->
+                    <#t> <#if buttonFlat?? && buttonFlat=='true'> flat </#if>
                     <#t> class="m-link<#if .node["@style"]?has_content> ${ec.getResource().expandNoL10n(.node["@style"], "")}</#if>"
                     <#t><#if linkFormId?has_content> id="${linkFormId}"</#if><#if linkText?has_content> label="${linkText}"</#if>>
                 <#if iconClass?has_content><i class="${iconClass}"></i></#if><#if linkNode["image"]?has_content><#visit linkNode["image"][0]></#if>
@@ -269,6 +280,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
                 <#if linkNode["@link-type"]! != "anchor">
                     <#t>>
                     <q-btn dense size="sm" unelevated no-caps color="<@getQuasarColor linkNode["@btn-type"]!"primary"/>"<#rt>
+                        <#t> <#if buttonFlat?? && buttonFlat=='true'> flat </#if>
                         <#t> class="m-link<#if linkNode["@style"]?has_content> ${ec.getResource().expandNoL10n(linkNode["@style"], "")}</#if>">
                 <#else>
                     <#t> class="<#if linkNode["@style"]?has_content> ${ec.getResource().expandNoL10n(linkNode["@style"], "")}</#if>">
@@ -282,6 +294,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
         <#else>
             <#if linkFormId?has_content>
             <#rt><q-btn dense size="sm" unelevated no-caps type="submit" form="${linkFormId}" id="${linkFormId}_button" color="<@getQuasarColor linkNode["@btn-type"]!"primary"/>"
+                    <#t> <#if buttonFlat?? && buttonFlat=='true'> flat </#if>
                     <#t> class="<#if linkNode["@style"]?has_content>${ec.getResource().expandNoL10n(linkNode["@style"], "")}</#if>"
                     <#t><#if confirmationMessage?has_content> onclick="return confirm('${confirmationMessage?js_string}')"</#if>>
                     <#t><#if linkNode["@tooltip"]?has_content><q-tooltip>${ec.getResource().expand(linkNode["@tooltip"], "")}</q-tooltip></#if>
@@ -302,6 +315,8 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
     </#if>
 </#macro>
 <#macro linkFormForm linkNode linkFormId linkText urlInstance>
+    <#assign buttonFlat = "">
+    <#if linkNode["@button-flat"]?has_content><#assign buttonFlat = linkNode["@button-flat"]></#if>
     <#if !urlInstance.disableLink && !sri.isAnchorLink(linkNode, urlInstance)>
         <#if urlInstance.getTargetTransition()?has_content><#assign linkFormType = "m-form"><#else><#assign linkFormType = "m-form-link"></#if>
         <${linkFormType} action="${urlInstance.path}" name="${linkFormId!""}"<#if linkFormId?has_content> id="${linkFormId}"</#if><#if linkNode["@target-window"]?has_content> target="${linkNode["@target-window"]}"</#if>><#-- :no-validate="true" -->
@@ -319,6 +334,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
                     <#if !iconClass?has_content && linkNode["@text"]?has_content><#assign iconClass = sri.getThemeIconClass(linkNode["@text"])!></#if>
                     <#assign badgeMessage = ec.getResource().expand(linkNode["@badge"]!, "")/>
                     <#rt><q-btn dense size="sm" unelevated no-caps type="submit" <#if linkNode["@link-type"]! == "hidden-form-link">flat<#else> </#if>
+                            <#t> <#if buttonFlat?? && buttonFlat=='true'> flat </#if>
                             <#t> color="<@getQuasarColor linkNode["@btn-type"]!"primary"/>" class="m-link<#if .node["@style"]?has_content> ${ec.getResource().expandNoL10n(.node["@style"], "")}</#if>"
                             <#t><#if confirmationMessage?has_content> onclick="return confirm('${confirmationMessage?js_string}')"</#if>>
                         <#t><#if linkNode["@tooltip"]?has_content><q-tooltip>${ec.getResource().expand(linkNode["@tooltip"], "")}</q-tooltip></#if>
@@ -380,6 +396,8 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
 <#macro parameter><#-- do nothing, used directly in other elements --></#macro>
 
 <#macro "button-menu">
+    <#assign buttonFlat = "">
+    <#if .node["@button-flat"]?has_content><#assign buttonFlat = .node["@button-flat"]></#if>
     <#if .node["@condition"]?has_content><#assign conditionResult = ec.getResource().condition(.node["@condition"], "")><#else><#assign conditionResult = true></#if>
     <#if !conditionResult><#return></#if>
 
@@ -397,6 +415,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
 
         <#-- NOTE: do not use auto-close or v-close-popup because it closes dialogs as well as the menu! -->
         <q-btn-dropdown dense size="sm" unelevated no-caps color="<@getQuasarColor .node["@btn-type"]!"primary"/>"<#rt>
+                <#t> <#if buttonFlat?? && buttonFlat=='true'> flat </#if>
                 <#lt><#if .node["@style"]?has_content> class="${ec.getResource().expandNoL10n(.node["@style"], "")}"</#if>>
             <template v-slot:label>
                 <#if .node["@tooltip"]?has_content><q-tooltip>${ec.getResource().expand(.node["@tooltip"], "")}</q-tooltip></#if>
@@ -1951,11 +1970,13 @@ a => A, d => D, y => Y
 <#macro reset><q-btn dense outline type="reset" name="<@fieldName .node/>" value="<@fieldTitle .node?parent/>" id="<@fieldId .node/>"<#if .node["@icon"]?has_content> iconcls="ui-icon-${.node["@icon"]}"</#if><#if .node?parent["@tooltip"]?has_content> data-toggle="tooltip" title="${ec.getResource().expand(.node?parent["@tooltip"], "")}"</#if><#if ownerForm?has_content> form="${ownerForm}"</#if>></#macro>
 
 <#macro submit>
+    <#assign buttonFlat = "">
+    <#if .node["@button-flat"]?has_content><#assign buttonFlat = .node["@button-flat"]></#if>
     <#assign confirmationMessage = ec.getResource().expand(.node["@confirmation"]!, "")/>
     <#assign buttonText><#if .node["@text"]?has_content>${ec.getResource().expand(.node["@text"], "")}<#else><@fieldTitle .node?parent/></#if></#assign>
     <#assign iconClass = .node["@icon"]!>
     <#if !iconClass?has_content><#assign iconClass = sri.getThemeIconClass(buttonText)!></#if>
-    <q-btn size="sm" unelevated no-caps type="submit" name="<@fieldName .node/>" value="<@fieldName .node/>" id="<@fieldId .node/>"<#rt>
+    <q-btn size="sm" unelevated no-caps type="submit" name="<@fieldName .node/>" value="<@fieldName .node/>" id="<@fieldId .node/>" <#if buttonFlat?has_content> flat</#if><#rt>
             <#t> color="<@getQuasarColor .node["@type"]!"primary"/>"<#if formDisabled!> disabled</#if>
             <#t><#if confirmationMessage?has_content> onclick="return confirm('${confirmationMessage?js_string}');"</#if>
             <#t><#if ownerForm?has_content> form="${ownerForm}"</#if><#if !.node["image"]?has_content> label="${buttonText}"</#if>>
