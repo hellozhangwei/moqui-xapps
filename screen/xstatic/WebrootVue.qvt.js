@@ -4,6 +4,7 @@
 Vue.prototype.moqui = moqui;
 Vue.prototype.moment = moment;
 Vue.prototype.window = window;
+Vue.prototype.inputBgColor="blue-1";
 
 moqui.urlExtensions = { js:'qjs', vue:'qvue', vuet:'qvt' }
 
@@ -1217,7 +1218,7 @@ Vue.component('m-date-time', {
     template:
     // NOTE: tried :fill-mask="formatVal" but results in all Y, only supports single character for mask placeholder... how to show more helpful date mask?
     // TODO: add back @focus="focusDate" @blur="blurDate" IFF needed given different mask/etc behavior
-    '<q-input dense bg-color="blue-1" stack-label :label="label" v-bind:value="value" v-on:input="$emit(\'input\', $event)" :rules="rules"' +
+    '<q-input dense :bg-color="inputBgColor" stack-label :label="label" v-bind:value="value" v-on:input="$emit(\'input\', $event)" :rules="rules"' +
             ' :mask="inputMask" fill-mask :id="id" :name="name" :form="form" :disable="disable" :size="sizeVal" style="max-width:max-content;">' +
         '<template v-slot:prepend v-if="type==\'date\' || type==\'date-time\' || !type">' +
             '<q-icon name="event" class="cursor-pointer" style="font-size: 12px">' +
@@ -1331,13 +1332,13 @@ Vue.component('m-date-period', {
             '</template>' +
         '</m-date-time>' +
     '</div>' +
-    '<div v-else class="row"><q-input dense bg-color="blue-1" stack-label :label="label" v-model="fields[name+\'_pdate\']"' +
+    '<div v-else class="row"><q-input dense :bg-color="inputBgColor" stack-label :label="label" v-model="fields[name+\'_pdate\']"' +
             ' mask="####-##-##" fill-mask :id="id" :name="name+\'_pdate\'" :form="form" style="max-width:max-content;">' +
         '<q-tooltip v-if="tooltip">{{tooltip}}</q-tooltip>' +
         '<template v-slot:before>' +
-            '<q-select class="q-pr-xs" dense bg-color="blue-1" options-dense emit-value map-options v-model="fields[name+\'_poffset\']" :name="name+\'_poffset\'"' +
+            '<q-select class="q-pr-xs" dense :bg-color="inputBgColor" options-dense emit-value map-options v-model="fields[name+\'_poffset\']" :name="name+\'_poffset\'"' +
                 ' stack-label label="Offset" :options="dateOffsets" :form="form" behavior="menu"></q-select>' +
-            '<q-select dense bg-color="blue-1" options-dense emit-value map-options v-model="fields[name+\'_period\']" :name="name+\'_period\'"' +
+            '<q-select dense :bg-color="inputBgColor" options-dense emit-value map-options v-model="fields[name+\'_period\']" :name="name+\'_period\'"' +
                 ' stack-label label="Period" :options="datePeriods" :form="form" behavior="menu"></q-select>' +
         '</template>' +
         '<template v-slot:prepend>' +
@@ -1477,7 +1478,7 @@ Vue.component('m-drop-down', {
         // was: ':fill-input="!multiple" hide-selected' changed to ':hide-selected="multiple"' to show selected to the left of input,
         //     fixes issues with fill-input where set values would sometimes not be displayed
         '<q-select ref="qSelect" v-bind:value="value" v-on:input="handleInput($event)"' +
-                ' dense bg-color="blue-1" options-dense use-input :hide-selected="multiple" :name="name" :id="id" :form="form"' +
+                ' dense :bg-color="inputBgColor" options-dense use-input :hide-selected="multiple" :name="name" :id="id" :form="form"' +
                 ' input-debounce="500" @filter="filterFn" :clearable="allowEmpty||multiple" :disable="disable"' +
                 ' :multiple="multiple" :emit-value="!onSelectGoTo" map-options behavior="menu"' +
                 ' :rules="[val => allowEmpty||multiple||val===\'\'||(val&&val.length)||\'Please select an option\']"' +
@@ -1735,7 +1736,7 @@ Vue.component('m-text-line', {
         defaultUrl:String, defaultParameters:Object, dependsOn:Object, dependsOptional:Boolean, defaultLoadInit:Boolean },
     data: function() { return { loading:false } },
     template:
-        '<q-input dense bg-color="blue-1" stack-label :label="label" :prefix="prefix" v-bind:value="value" v-on:input="$emit(\'input\', $event)" :type="type"' +
+        '<q-input dense :bg-color="inputBgColor" stack-label :label="label" :prefix="prefix" v-bind:value="value" v-on:input="$emit(\'input\', $event)" :type="type"' +
                 ' :id="id" :name="name" :size="size" :loading="loading" :rules="rules" :disable="disable" :mask="mask" :fill-mask="fillMask"' +
                 ' autocapitalize="off" autocomplete="off">' +
             '<q-tooltip v-if="tooltip">{{tooltip}}</q-tooltip>' +
