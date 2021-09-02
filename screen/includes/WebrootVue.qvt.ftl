@@ -17,7 +17,7 @@ along with this software (see the LICENSE.md file). If not, see
     <input type="hidden" id="confMoquiSessionToken" value="${ec.web.sessionToken}">
     <input type="hidden" id="confAppHost" value="${ec.web.getHostName(true)}">
     <input type="hidden" id="confAppRootPath" value="${ec.web.servletContext.contextPath}">
-    <input type="hidden" id="confBasePath" value="${ec.web.servletContext.contextPath}/marble">
+    <input type="hidden" id="confBasePath" value="${ec.web.servletContext.contextPath}/apps">
     <input type="hidden" id="confLinkBasePath" value="${ec.web.servletContext.contextPath}/xapps">
     <input type="hidden" id="confUserId" value="${ec.user.userId!''}">
     <input type="hidden" id="confLocale" value="${ec.user.locale.toLanguageTag()}">
@@ -39,9 +39,8 @@ along with this software (see the LICENSE.md file). If not, see
                 <q-btn dense flat icon="apps" class="q-mr-sm " @click="toggleLeftOpen()"></q-btn>
                 <q-separator dark vertical></q-separator>
 
-                <template v-if="navMenuList[0]">
-
-                    <template v-for="(subscreen, subscreenIndex) in navMenuList[0].subscreens">
+                <template v-if="navMenuList[1]">
+                    <template v-for="(subscreen, subscreenIndex) in navMenuList[1].subscreens">
                         <template v-if="(subscreenIndex+1)<=${moreSize}">
                             <q-btn stretch flat stack class="text-bold" style="width:90px"
                                    :icon="(subscreen.imageType == 'icon')?subscreen.image:'img:' + subscreen.image"
@@ -52,7 +51,7 @@ along with this software (see the LICENSE.md file). If not, see
                     </template>
                 </template>
 
-                <template v-if="(navMenuList[0] && navMenuList[0].subscreens.length+1)>${moreSize}">
+                <template v-if="(navMenuList[1] && navMenuList[1].subscreens.length+1)>${moreSize}">
                     <q-btn-dropdown flat no-caps>
                         <template v-slot:label>
                             <div>
@@ -61,7 +60,7 @@ along with this software (see the LICENSE.md file). If not, see
                             </div>
                         </template>
                         <q-list>
-                            <template v-for="(subscreen, subscreenIndex) in navMenuList[0].subscreens">
+                            <template v-for="(subscreen, subscreenIndex) in navMenuList[1].subscreens">
                                 <template v-if="(subscreenIndex+1)>${moreSize}">
                                     <q-item clickable v-close-popup tabindex="0" :to="subscreen.pathWithParams">
                                         <q-item-section avatar>
@@ -78,8 +77,8 @@ along with this software (see the LICENSE.md file). If not, see
                     </q-btn-dropdown>
                 </template>
                 <q-separator dark vertical></q-separator>
-                <template v-if="navMenuList[0] && navMenuList[0].subscreens.length>${moreSize}">
-                    <template v-for="(subscreen, subscreenIndex) in navMenuList[0].subscreens">
+                <template v-if="navMenuList[1] && navMenuList[1].subscreens.length>${moreSize}">
+                    <template v-for="(subscreen, subscreenIndex) in navMenuList[1].subscreens">
                         <template v-if="(subscreenIndex+1)>${moreSize} && subscreen.active">
                             <q-btn stretch flat stack class="text-bold"
                                    :icon="(subscreen.imageType == 'icon')?subscreen.image:'img:' + subscreen.image"
@@ -174,8 +173,8 @@ along with this software (see the LICENSE.md file). If not, see
             </q-toolbar>
 
             <div class="bg-grey-3 text-black row" id="app-sub-navigation">
-                <template v-if="navMenuList[1] && !navMenuList[1].hasTabMenu">
-                    <template v-for="(subscreen, subscreenIndex) in navMenuList[1].subscreens">
+                <template v-if="navMenuList[2] && !navMenuList[2].hasTabMenu">
+                    <template v-for="(subscreen, subscreenIndex) in navMenuList[2].subscreens">
                         <q-btn stretch flat size="sm" :label="subscreen.title" :to="subscreen.pathWithParams"
                                :class="{'active bg-white':subscreen.active}"
                                style="border-bottom:1px solid #0000001f;"></q-btn><q-separator vertical></q-separator>
@@ -187,55 +186,16 @@ along with this software (see the LICENSE.md file). If not, see
         <q-drawer v-model="leftOpen" side="left" overlay bordered>
             <q-list padding>
                 <q-item-label header>Applications</q-item-label>
-
-                <q-item clickable v-ripple>
-                    <q-item-section avatar>
-                        <q-icon color="primary" name="bluetooth" />
-                    </q-item-section>
-                    <q-item-section>Marble ERP</q-item-section>
-                </q-item>
-
-                <q-item clickable v-ripple>
-                    <q-item-section avatar>
-                        <q-icon color="primary" name="bluetooth" />
-                    </q-item-section>
-                    <q-item-section>HiveMind PM</q-item-section>
-                </q-item>
-
-                <q-item clickable v-ripple>
-                    <q-item-section avatar>
-                        <q-icon color="primary" name="bluetooth" />
-                    </q-item-section>
-                    <q-item-section>HiveMind Admin</q-item-section>
-                </q-item>
-
-                <q-item clickable v-ripple>
-                    <q-item-section avatar>
-                        <q-icon color="primary" name="bluetooth" />
-                    </q-item-section>
-                    <q-item-section>POPC ERP</q-item-section>
-                </q-item>
-
-                <q-item clickable v-ripple>
-                    <q-item-section avatar>
-                        <q-icon color="primary" name="bluetooth" />
-                    </q-item-section>
-                    <q-item-section>Tools</q-item-section>
-                </q-item>
-
-                <q-item clickable v-ripple>
-                    <q-item-section avatar>
-                        <q-icon color="primary" name="bluetooth" />
-                    </q-item-section>
-                    <q-item-section>System</q-item-section>
-                </q-item>
-
-                <q-item clickable v-ripple>
-                    <q-item-section avatar>
-                        <q-icon color="primary" name="bluetooth" />
-                    </q-item-section>
-                    <q-item-section>Example</q-item-section>
-                </q-item>
+                <template v-if="navMenuList[0]">
+                    <template v-for="(subscreen, subscreenIndex) in navMenuList[0].subscreens">
+                        <q-item clickable v-ripple :to="subscreen.pathWithParams" >
+                            <q-item-section avatar>
+                                <q-icon :name="(subscreen.imageType == 'icon')?subscreen.image:'img:' + subscreen.image"></q-icon>
+                            </q-item-section>
+                            <q-item-section>{{subscreen.title}}</q-item-section>
+                        </q-item>
+                    </template>
+                </template>
             </q-list>
         </q-drawer>
 
