@@ -52,9 +52,9 @@
 
     <!-- /qapps (qvt/qvue) header plugins -->
     <moqui.screen.ScreenThemeResource screenThemeId="DEFAULT_XAPPS" sequenceNum="125" resourceTypeEnumId="STRT_HEADER_NAVBAR_COMP"
-                                      resourceValue="/zstatic/lib/QuickSearch.qvue"/>
+                                      resourceValue="/xstatic/lib/QuickSearch.qvue"/>
     <moqui.screen.ScreenThemeResource screenThemeId="DEFAULT_XAPPS" sequenceNum="130" resourceTypeEnumId="STRT_HEADER_NAVBAR_COMP"
-                                      resourceValue="/zstatic/lib/ActiveOrgNav.qvue"/>
+                                      resourceValue="/xstatic/lib/ActiveOrgNav.qvue"/>
     <moqui.screen.ScreenThemeResource screenThemeId="DEFAULT_XAPPS" sequenceNum="135" resourceTypeEnumId="STRT_HEADER_ACCOUNT_COMP"
-                                      resourceValue="/zstatic/lib/MyAccountNav.qvue"/>
+                                      resourceValue="/xstatic/lib/MyAccountNav.qvue"/>
 </entity-facade-xml>
