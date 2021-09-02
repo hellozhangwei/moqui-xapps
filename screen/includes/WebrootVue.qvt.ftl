@@ -42,7 +42,7 @@ along with this software (see the LICENSE.md file). If not, see
                 <template v-if="navMenuList[1]">
                     <template v-for="(subscreen, subscreenIndex) in navMenuList[1].subscreens">
                         <template v-if="(subscreenIndex+1)<=${moreSize}">
-                            <q-btn stretch flat stack class="text-bold" style="width:90px"
+                            <q-btn stretch flat stack no-caps class="text-bold" style="width:90px"
                                    :icon="(subscreen.imageType == 'icon')?subscreen.image:'img:' + subscreen.image"
                                    :class="{'bg-secondary':subscreen.active}" :to="subscreen.pathWithParams" :label="subscreen.title">
                             </q-btn>
