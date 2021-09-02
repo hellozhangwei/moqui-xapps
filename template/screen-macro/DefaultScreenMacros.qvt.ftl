@@ -790,7 +790,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
                                  :fields-initial="{<#list hiddenParameterKeys as hiddenParameterKey>'${hiddenParameterKey}':'${Static["org.moqui.util.WebUtilities"].encodeHtmlJsSafe(hiddenParameterMap.get(hiddenParameterKey)!)}'<#sep>,</#list>}">
                         <q-btn dense no-caps outline type="submit" icon="clear" label="${ec.getL10n().localize("Clear Find")}" color="secondary">
                             <q-tooltip>Reset to Default</q-tooltip></q-btn>
-                    </m-form-link></span>N
+                    </m-form-link></span>
                 </#if>
             </#if>
 
