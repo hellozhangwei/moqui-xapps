@@ -177,7 +177,7 @@ along with this software (see the LICENSE.md file). If not, see
                     <template v-for="(subscreen, subscreenIndex) in navMenuList[2].subscreens">
                         <q-btn stretch flat size="sm" :label="subscreen.title" :to="subscreen.pathWithParams"
                                :class="{'active bg-white':subscreen.active}"
-                               style="border-bottom:1px solid #0000001f;"></q-btn><q-separator vertical></q-separator>
+                               :style="[subscreen.active?{}:{'border-bottom':'1px solid #0000001f'}]"></q-btn><q-separator vertical></q-separator>
                     </template>
                 </template>
             </div>
