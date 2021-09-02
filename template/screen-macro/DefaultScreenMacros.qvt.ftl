@@ -786,11 +786,11 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
                     <#assign hiddenParameterMap = sri.getFormHiddenParameters(formNode)>
                     <#assign hiddenParameterKeys = hiddenParameterMap.keySet()>
                     <#assign curUrlInstance = sri.getCurrentScreenUrl()>
-                    <m-form-link name="${headerFormId}_clr" id="${headerFormId}_clr" action="${curUrlInstance.path}"
+                    <span><m-form-link name="${headerFormId}_clr" id="${headerFormId}_clr" action="${curUrlInstance.path}"
                                  :fields-initial="{<#list hiddenParameterKeys as hiddenParameterKey>'${hiddenParameterKey}':'${Static["org.moqui.util.WebUtilities"].encodeHtmlJsSafe(hiddenParameterMap.get(hiddenParameterKey)!)}'<#sep>,</#list>}">
                         <q-btn dense no-caps outline type="submit" icon="clear" label="${ec.getL10n().localize("Clear Find")}" color="secondary">
                             <q-tooltip>Reset to Default</q-tooltip></q-btn>
-                    </m-form-link>
+                    </m-form-link></span>N
                 </#if>
             </#if>
 
