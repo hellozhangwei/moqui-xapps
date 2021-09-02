@@ -53,7 +53,13 @@ along with this software (see the LICENSE.md file). If not, see
                 </template>
 
                 <template v-if="(navMenuList[0] && navMenuList[0].subscreens.length+1)>${moreSize}">
-                    <q-btn-dropdown stretch flat label="更多...">
+                    <q-btn-dropdown flat no-caps>
+                        <template v-slot:label>
+                            <div>
+                                <q-icon name="more_horiz"></q-icon>
+                                <div class="text-center">${ec.l10n.localize("More")}</div>
+                            </div>
+                        </template>
                         <q-list>
                             <template v-for="(subscreen, subscreenIndex) in navMenuList[0].subscreens">
                                 <template v-if="(subscreenIndex+1)>${moreSize}">
@@ -179,9 +185,57 @@ along with this software (see the LICENSE.md file). If not, see
         </q-header>
 
         <q-drawer v-model="leftOpen" side="left" overlay bordered>
-            <q-list dense padding>
-                Marble ERP
-                Hive mind
+            <q-list padding>
+                <q-item-label header>Applications</q-item-label>
+
+                <q-item clickable v-ripple>
+                    <q-item-section avatar>
+                        <q-icon color="primary" name="bluetooth" />
+                    </q-item-section>
+                    <q-item-section>Marble ERP</q-item-section>
+                </q-item>
+
+                <q-item clickable v-ripple>
+                    <q-item-section avatar>
+                        <q-icon color="primary" name="bluetooth" />
+                    </q-item-section>
+                    <q-item-section>HiveMind PM</q-item-section>
+                </q-item>
+
+                <q-item clickable v-ripple>
+                    <q-item-section avatar>
+                        <q-icon color="primary" name="bluetooth" />
+                    </q-item-section>
+                    <q-item-section>HiveMind Admin</q-item-section>
+                </q-item>
+
+                <q-item clickable v-ripple>
+                    <q-item-section avatar>
+                        <q-icon color="primary" name="bluetooth" />
+                    </q-item-section>
+                    <q-item-section>POPC ERP</q-item-section>
+                </q-item>
+
+                <q-item clickable v-ripple>
+                    <q-item-section avatar>
+                        <q-icon color="primary" name="bluetooth" />
+                    </q-item-section>
+                    <q-item-section>Tools</q-item-section>
+                </q-item>
+
+                <q-item clickable v-ripple>
+                    <q-item-section avatar>
+                        <q-icon color="primary" name="bluetooth" />
+                    </q-item-section>
+                    <q-item-section>System</q-item-section>
+                </q-item>
+
+                <q-item clickable v-ripple>
+                    <q-item-section avatar>
+                        <q-icon color="primary" name="bluetooth" />
+                    </q-item-section>
+                    <q-item-section>Example</q-item-section>
+                </q-item>
             </q-list>
         </q-drawer>
 
