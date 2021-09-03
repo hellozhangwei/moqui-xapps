@@ -28,13 +28,13 @@ along with this software (see the LICENSE.md file). If not, see
     <#assign accountCompList = sri.getThemeValues("STRT_HEADER_ACCOUNT_COMP")>
     <#list accountCompList! as accountCompUrl><input type="hidden" class="confAccountPluginUrl" value="${accountCompUrl}"></#list>
 
-    <#assign headerClass = "bg-black text-white">
+    <#assign headerClass = "bg-primary text-white">
 
     <#-- for layout options see: https://quasar.dev/layout/layout -->
     <#-- to build a layout use the handy Quasar tool: https://quasar.dev/layout-builder -->
     <q-layout view="hHh LpR fFf">
         <q-header reveal bordered class="${headerClass}" id="top" style="border-bottom:none;background: linear-gradient(145deg,#1976d2 11%,#0f477e 75%) !important">
-            <q-toolbar class="bg-primary text-white " style="border-bottom:solid 5px #26a69a">
+            <q-toolbar style="border-bottom:solid 5px #26a69a">
 
                 <#--<q-btn dense flat icon="apps" class="q-mr-sm" @click="toggleLeftOpen()"></q-btn>-->
                 <q-btn dense flat icon="apps" class="q-mr-sm" @click="window.location='/xapps'"></q-btn>
@@ -43,7 +43,7 @@ along with this software (see the LICENSE.md file). If not, see
                 <template v-if="navMenuList[1]">
                     <template v-for="(subscreen, subscreenIndex) in navMenuList[1].subscreens">
                         <template v-if="(subscreenIndex+1)<=${moreSize}">
-                            <q-btn stretch flat stack no-caps class="text-bold" style="width:90px"
+                            <q-btn stretch flat stack no-caps class="text-bold"
                                    :icon="(subscreen.imageType == 'icon')?subscreen.image:'img:' + subscreen.image"
                                    :class="{'bg-secondary':subscreen.active}" :to="subscreen.pathWithParams" :label="subscreen.title">
                             </q-btn>
