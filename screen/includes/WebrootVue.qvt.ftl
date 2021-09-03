@@ -37,7 +37,9 @@ along with this software (see the LICENSE.md file). If not, see
             <q-toolbar style="border-bottom:solid 5px #26a69a;padding-left: 0px">
 
                 <#--<q-btn dense flat icon="apps" class="q-mr-sm" @click="toggleLeftOpen()"></q-btn>-->
-                <q-btn stretch flat icon="apps" @click="window.location='/xapps'"></q-btn>
+                <template v-if="navMenuList[0]">
+                    <q-btn stretch flat icon="apps" :to="navMenuList[0].path"></q-btn>
+                </template>
                 <q-separator dark vertical></q-separator>
 
                 <template v-if="navMenuList[1]">
