@@ -34,26 +34,33 @@ along with this software (see the LICENSE.md file). If not, see
     <#-- to build a layout use the handy Quasar tool: https://quasar.dev/layout-builder -->
     <q-layout view="hHh LpR fFf">
         <q-header reveal bordered class="${headerClass}" id="top" style="border-bottom:none;background: linear-gradient(145deg,#1976d2 11%,#0f477e 75%) !important">
-            <q-toolbar style="border-bottom:solid 5px #26a69a">
+            <q-toolbar style="border-bottom:solid 5px #26a69a;padding-left: 0px">
 
                 <#--<q-btn dense flat icon="apps" class="q-mr-sm" @click="toggleLeftOpen()"></q-btn>-->
-                <q-btn dense flat icon="apps" class="q-mr-sm" @click="window.location='/xapps'"></q-btn>
+                <q-btn stretch flat icon="apps" @click="window.location='/xapps'"></q-btn>
                 <q-separator dark vertical></q-separator>
+
+                <template v-if="navMenuList[1]">
+                    <q-btn stretch flat no-caps class="text-bold"
+                           :icon="(navMenuList[1].imageType == 'icon')?navMenuList[1].image:'img:' + navMenuList[1].image"
+                           :label="navMenuList[1].title"></q-btn>
+                    <#--<q-separator dark vertical></q-separator>-->
+                </template>
 
                 <template v-if="navMenuList[1]">
                     <template v-for="(subscreen, subscreenIndex) in navMenuList[1].subscreens">
                         <template v-if="(subscreenIndex+1)<=${moreSize}">
-                            <q-btn stretch flat stack no-caps class="text-bold"
+                            <q-btn stretch flat stack no-caps size="13px"
                                    :icon="(subscreen.imageType == 'icon')?subscreen.image:'img:' + subscreen.image"
                                    :class="{'bg-secondary':subscreen.active}" :to="subscreen.pathWithParams" :label="subscreen.title">
                             </q-btn>
-                            <q-separator dark vertical></q-separator>
+                            <#--<q-separator dark vertical></q-separator>-->
                         </template>
                     </template>
                 </template>
 
                 <template v-if="(navMenuList[1] && navMenuList[1].subscreens && navMenuList[1].subscreens.length+1)>${moreSize}">
-                    <q-btn-dropdown flat no-caps>
+                    <q-btn-dropdown flat no-caps size="13px">
                         <template v-slot:label>
                             <div>
                                 <q-icon name="more_horiz"></q-icon>
@@ -77,7 +84,7 @@ along with this software (see the LICENSE.md file). If not, see
                         </q-list>
                     </q-btn-dropdown>
                 </template>
-                <q-separator dark vertical></q-separator>
+                <#--<q-separator dark vertical></q-separator>-->
                 <template v-if="navMenuList[1] && navMenuList[1].subscreens && navMenuList[1].subscreens.length>${moreSize}">
                     <template v-for="(subscreen, subscreenIndex) in navMenuList[1].subscreens">
                         <template v-if="(subscreenIndex+1)>${moreSize} && subscreen.active">
