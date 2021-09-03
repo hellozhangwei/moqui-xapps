@@ -36,7 +36,8 @@ along with this software (see the LICENSE.md file). If not, see
         <q-header reveal bordered class="${headerClass}" id="top" style="border-bottom:none;background: linear-gradient(145deg,#1976d2 11%,#0f477e 75%) !important">
             <q-toolbar class="bg-primary text-white " style="border-bottom:solid 5px #26a69a">
 
-                <q-btn dense flat icon="apps" class="q-mr-sm " @click="toggleLeftOpen()"></q-btn>
+                <#--<q-btn dense flat icon="apps" class="q-mr-sm" @click="toggleLeftOpen()"></q-btn>-->
+                <q-btn dense flat icon="apps" class="q-mr-sm" @click="window.location='/xapps'"></q-btn>
                 <q-separator dark vertical></q-separator>
 
                 <template v-if="navMenuList[1]">
@@ -51,7 +52,7 @@ along with this software (see the LICENSE.md file). If not, see
                     </template>
                 </template>
 
-                <template v-if="(navMenuList[1] && navMenuList[1].subscreens.length+1)>${moreSize}">
+                <template v-if="(navMenuList[1] && navMenuList[1].subscreens && navMenuList[1].subscreens.length+1)>${moreSize}">
                     <q-btn-dropdown flat no-caps>
                         <template v-slot:label>
                             <div>
@@ -77,7 +78,7 @@ along with this software (see the LICENSE.md file). If not, see
                     </q-btn-dropdown>
                 </template>
                 <q-separator dark vertical></q-separator>
-                <template v-if="navMenuList[1] && navMenuList[1].subscreens.length>${moreSize}">
+                <template v-if="navMenuList[1] && navMenuList[1].subscreens && navMenuList[1].subscreens.length>${moreSize}">
                     <template v-for="(subscreen, subscreenIndex) in navMenuList[1].subscreens">
                         <template v-if="(subscreenIndex+1)>${moreSize} && subscreen.active">
                             <q-btn stretch flat stack class="text-bold"
@@ -183,7 +184,7 @@ along with this software (see the LICENSE.md file). If not, see
             </div>
         </q-header>
 
-        <q-drawer v-model="leftOpen" side="left" overlay bordered>
+        <#--<q-drawer v-model="leftOpen" side="left" overlay bordered>
             <q-list padding>
                 <q-item-label header>Applications</q-item-label>
                 <template v-if="navMenuList[0]">
@@ -197,7 +198,7 @@ along with this software (see the LICENSE.md file). If not, see
                     </template>
                 </template>
             </q-list>
-        </q-drawer>
+        </q-drawer>-->
 
         <q-page-container class="q-ma-sm" @click="leftOpen=false"><q-page>
             <m-subscreens-active></m-subscreens-active>
