@@ -43,10 +43,11 @@ along with this software (see the LICENSE.md file). If not, see
                 <q-separator dark vertical></q-separator>
 
                 <template v-if="navMenuList[1]">
-                    <q-btn stretch flat no-caps class="text-bold"
+                    <#--<q-btn stretch flat no-caps class="text-bold"
                            :icon="(navMenuList[1].imageType == 'icon')?navMenuList[1].image:'img:' + navMenuList[1].image"
-                           :label="navMenuList[1].title"></q-btn>
+                           :label="navMenuList[1].title"></q-btn>-->
                     <#--<q-separator dark vertical></q-separator>-->
+                    <q-toolbar-title>{{navMenuList[1].title}}</q-toolbar-title>
                 </template>
 
                 <template v-if="navMenuList[1]">
