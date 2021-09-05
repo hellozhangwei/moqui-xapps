@@ -63,7 +63,7 @@ along with this software (see the LICENSE.md file). If not, see
                 </template>
 
                 <template v-if="(navMenuList[1] && navMenuList[1].subscreens && navMenuList[1].subscreens.length+1)>${moreSize}">
-                    <q-btn-dropdown flat no-caps size="13px">
+                    <#--<q-btn-dropdown flat no-border-radius no-caps content-style="font-size:13px">
                         <template v-slot:label>
                             <div>
                                 <q-icon name="more_horiz"></q-icon>
@@ -85,7 +85,26 @@ along with this software (see the LICENSE.md file). If not, see
                                 </template>
                             </template>
                         </q-list>
-                    </q-btn-dropdown>
+                    </q-btn-dropdown>-->
+
+                    <q-btn stretch flat stack no-caps size="13px" label="${ec.l10n.localize("More")}" icon="more_horiz">
+                        <q-menu>
+                            <q-list>
+                                <template v-for="(subscreen, subscreenIndex) in navMenuList[1].subscreens">
+                                    <template v-if="(subscreenIndex+1)>${moreSize}">
+                                        <q-item clickable v-close-popup tabindex="0" :to="subscreen.pathWithParams">
+                                            <q-item-section avatar>
+                                                <q-icon :name="(subscreen.imageType == 'icon')?subscreen.image:'img:' + subscreen.image"></q-icon>
+                                            </q-item-section>
+                                            <q-item-section>
+                                                <q-item-label>{{subscreen.title}}</q-item-label>
+                                            </q-item-section>
+                                        </q-item>
+                                    </template>
+                                </template>
+                            </q-list>
+                        </q-menu>
+                    </q-btn>
                 </template>
                 <#--<q-separator dark vertical></q-separator>-->
                 <template v-if="navMenuList[1] && navMenuList[1].subscreens && navMenuList[1].subscreens.length>${moreSize}">
