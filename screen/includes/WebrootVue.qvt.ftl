@@ -89,10 +89,10 @@ along with this software (see the LICENSE.md file). If not, see
 
                     <q-btn stretch flat stack no-caps size="13px" label="${ec.l10n.localize("More")}" icon="more_horiz">
                         <q-menu>
-                            <q-list>
+                            <q-list dense>
                                 <template v-for="(subscreen, subscreenIndex) in navMenuList[1].subscreens">
                                     <template v-if="(subscreenIndex+1)>${moreSize}">
-                                        <q-item clickable v-close-popup tabindex="0" :to="subscreen.pathWithParams">
+                                        <q-item clickable v-close-popup tabindex="0" :to="subscreen.pathWithParams" :class="{'bg-secondary text-white':subscreen.active}">
                                             <q-item-section avatar>
                                                 <q-icon :name="(subscreen.imageType == 'icon')?subscreen.image:'img:' + subscreen.image"></q-icon>
                                             </q-item-section>
