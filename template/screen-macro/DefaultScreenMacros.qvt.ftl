@@ -836,6 +836,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
                     <#assign descLabel = ec.getL10n().localize("Description")>
 
                     <#if activeFormListFind?has_content>
+                        <div class="q-pa-md  <@getFormBgColor/>">
                         <#assign screenScheduled = formListInfo.getScreenForm().getFormListFindScreenScheduled(activeFormListFind.formListFindId, ec)!>
                         <div><strong>${ec.getL10n().localize("Active Saved Find:")}</strong> ${activeFormListFind.description?html}
                             <#if userDefaultFormListFindId == activeFormListFind.formListFindId><span class="text-info">(${ec.getL10n().localize("My Default")})</span></#if></div>
@@ -845,29 +846,36 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
                         <#else>
                             <m-form class="form-inline" id="${formId}_SCHED" action="${formSaveFindUrl}" v-slot:default="formProps"
                                     :fields-initial="{formListFindId:'${activeFormListFind.formListFindId}', screenPath:'${sri.getScreenUrlInstance().path}', renderMode:'', cronSelected:''}">
+                                <div class="q-gutter-md">
                                 <m-drop-down v-model="formProps.fields.renderMode" name="renderMode" label="${ec.getL10n().localize("Mode")}" id="${formId}_SCHED_renderMode"
                                              :options="[{value:'xlsx',label:'XLSX'},{value:'csv',label:'CSV'},{value:'xsl-fo',label:'PDF'}]"></m-drop-down>
                                 <m-drop-down v-model="formProps.fields.cronSelected" name="cronSelected" label="${ec.getL10n().localize("Schedule")}" id="${formId}_SCHED_cronSelected"
                                              :options="[{value:'0 0 6 ? * MON-FRI',label:'Monday-Friday'},{value:'0 0 6 ? * *',label:'Every Day'},{value:'0 0 6 ? * MON',label:'Monday Only'},{value:'0 0 6 1 * ?',label:'Monthly'}]"></m-drop-down>
-                                <q-btn dense outline no-caps type="submit" name="ScheduleFind" onclick="return confirm('${ec.getL10n().localize("Setup a schedule to send this saved find to you by email?")}');" label="${ec.getL10n().localize("Schedule")}"></q-btn>
+                                <q-btn dense unelevated color="primary" no-caps type="submit" name="ScheduleFind" onclick="return confirm('${ec.getL10n().localize("Setup a schedule to send this saved find to you by email?")}');" label="${ec.getL10n().localize("Schedule")}"></q-btn>
+                                </div>
                             </m-form>
                         </#if>
+                        </div>
+                        <q-separator  size="30px"></q-separator>
                     </#if>
+                    <div class="q-pa-md <@getFormBgColor/>">
                     <#if currentFindUrlParms?has_content>
-                        <#if activeFormListFind?has_content><hr></#if>
+                        <#--<#if activeFormListFind?has_content><hr></#if>-->
                         <p>${curFindSummary!""}</p>
-
                         <m-form class="form-inline" id="${formId}_NewFind" action="${formSaveFindUrl}" v-slot:default="formProps"
                                 :fields-initial="{formLocation:'${formListInfo.getSavedFindFullLocation()}',_findDescription:'',<#rt>
                         <#t><#list currentFindUrlParms.keySet() as parmName>'${parmName}':'${Static["org.moqui.util.WebUtilities"].encodeHtmlJsSafe(currentFindUrlParms.get(parmName)!)}',</#list>}">
                             <div class="big-row">
-                                <div class="q-my-auto big-row-item"><q-input v-model="formProps.fields._findDescription" dense outlined stack-label label="${descLabel}" size="30" name="_findDescription" id="${formId}_NewFind_description" required="required"></q-input></div>
-                                <div class="on-right q-my-auto big-row-item"><q-btn dense outline no-caps type="submit" label="${ec.getL10n().localize("Save New Find")}"></q-btn></div>
+                                <div class="q-my-auto big-row-item"><q-input bg-color="<@getInputBgColor/>" v-model="formProps.fields._findDescription" dense stack-label label="${descLabel}" size="30" name="_findDescription" id="${formId}_NewFind_description" required="required"></q-input></div>
+                                <div class="on-right q-my-auto big-row-item"><q-btn dense unelevated color="primary" no-caps type="submit" label="${ec.getL10n().localize("Save New Find")}"></q-btn></div>
                             </div>
                         </m-form>
                     <#else>
-                        <div style="margin:12px 0;"><strong>${ec.getL10n().localize("No find parameters (or default), choose some in Find Options to save a new find or update existing")}</strong></div>
+                        <strong>${ec.getL10n().localize("No find parameters (or default), choose some in Find Options to save a new find or update existing")}</strong>
                     </#if>
+                    </div>
+                    <q-separator  size="30px"></q-separator>
+
                     <#assign userFindInfoList = formListInfo.getUserFormListFinds(ec)>
                     <#list userFindInfoList as userFindInfo>
                         <#assign formListFind = userFindInfo.formListFind>
@@ -877,44 +885,49 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
                         <#assign doFindUrl = sri.buildUrl(sri.getScreenUrlInstance().path).addParameter("formListFindId", formListFind.formListFindId)>
                         <#assign saveFindFormId = formId + "_SaveFind" + userFindInfo_index>
                         <#if currentFindUrlParms?has_content>
-                            <div class="big-row">
+                            <div class="q-pa-md <@getFormBgColor/>">
                                 <m-form id="${saveFindFormId}" name="${saveFindFormId}" action="${formSaveFindUrl}" v-slot:default="formProps"
                                         :fields-initial="{formLocation:'${Static["org.moqui.util.WebUtilities"].encodeHtmlJsSafe(formListInfo.getSavedFindFullLocation())}', formListFindId:'${formListFind.formListFindId}',<#rt>
                                             <#t>_findDescription:'${Static["org.moqui.util.WebUtilities"].encodeHtmlJsSafe(formListFind.description?html)}',
                                             <#t><#list currentFindUrlParms.keySet() as parmName>'${parmName}':'${Static["org.moqui.util.WebUtilities"].encodeHtmlJsSafe(currentFindUrlParms.get(parmName)!)}',</#list>}">
-                                    <div class="q-my-auto big-row-item"><q-input v-model="formProps.fields._findDescription" dense outlined stack-label label="${descLabel}" size="30" name="_findDescription" id="${saveFindFormId}_description" required="required"></q-input></div>
-                                    <div class="on-right q-my-auto big-row-item"><q-btn dense outline no-caps type="submit" name="UpdateFind" label="${ec.getL10n().localize("Update")}">
+                                    <div class="row q-gutter-md">
+                                    <div class=""><q-input v-model="formProps.fields._findDescription" dense outlined stack-label label="${descLabel}" size="30" name="_findDescription" id="${saveFindFormId}_description" required="required"></q-input></div>
+                                    <div class=""><q-btn dense unelevated color="primary" no-caps type="submit" name="UpdateFind" label="${ec.getL10n().localize("Update")}">
                                             <q-tooltip>Update saved find using description and current find parameters</q-tooltip>
                                         </q-btn></div>
                                     <#if userFindInfo.isByUserId == "true">
-                                        <div class="q-my-auto big-row-item"><q-btn dense flat no-caps type="submit" name="DeleteFind" color="negative" icon="delete_forever" onclick="return confirm('${ec.getL10n().localize("Delete")} ${formListFind.description?js_string}?');"></q-btn></div>
+                                        <div class=""><q-btn dense unelevated no-caps type="submit" name="DeleteFind" color="negative" label="${ec.getL10n().localize("Delete")}" onclick="return confirm('${ec.getL10n().localize("Delete")} ${formListFind.description?js_string}?');"></q-btn></div>
                                     </#if>
-                                    <div class="q-my-auto big-row-item"><q-btn dense outline no-caps to="${doFindUrl.pathWithParams}" label="${ec.getL10n().localize("Do Find")}"></q-btn></div>
+                                    <div class=""><q-btn dense unelevated color="primary" no-caps to="${doFindUrl.pathWithParams}" label="${ec.getL10n().localize("Do Find")}"></q-btn></div>
                                     <#if userDefaultFormListFindId == formListFind.formListFindId>
-                                        <div class="q-my-auto big-row-item"><q-btn dense outline no-caps type="submit" name="ClearDefault" color="info" label="${ec.getL10n().localize("Clear Default")}"></q-btn></div>
+                                        <div class=""><q-btn dense unelevated color="primary" no-caps type="submit" name="ClearDefault" color="info" label="${ec.getL10n().localize("Clear Default")}"></q-btn></div>
                                     <#else>
-                                        <div class="q-my-auto big-row-item"><q-btn dense outline no-caps type="submit" name="MakeDefault" label="${ec.getL10n().localize("Make Default")}"></q-btn></div>
+                                        <div class=""><q-btn dense unelevated color="primary" no-caps type="submit" name="MakeDefault" label="${ec.getL10n().localize("Make Default")}"></q-btn></div>
                                     </#if>
+                                    </div>
                                 </m-form>
                             </div>
                         <#else>
-                            <div class="big-row">
-                                <div class="q-my-auto big-row-item on-left"><q-input dense outlined readonly value="${formListFind.description?html}"></q-input></div>
-                                <div class="q-my-auto big-row-item"><q-btn dense outline no-caps to="${doFindUrl.pathWithParams}" label="${ec.getL10n().localize("Do Find")}"></q-btn></div>
+                            <div class="q-pa-md <@getFormBgColor/>">
                                 <m-form id="${saveFindFormId}" action="${formSaveFindUrl}" :no-validate="true"
                                         :fields-initial="{formListFindId:'${formListFind.formListFindId}', formLocation:'${Static["org.moqui.util.WebUtilities"].encodeHtmlJsSafe(formListInfo.getSavedFindFullLocation())}'}">
+                                    <div class="row q-gutter-md">
+                                    <div class=""><q-input dense bg-color="<@getInputBgColor/>" value="${formListFind.description?html}"></q-input></div>
+                                    <div class=""><q-btn dense unelevated color="primary" no-caps to="${doFindUrl.pathWithParams}" label="${ec.getL10n().localize("Do Find")}"></q-btn></div>
                                     <#if userFindInfo.isByUserId == "true">
-                                        <div class="q-my-auto big-row-item"><q-btn dense flat no-caps type="submit" name="DeleteFind" color="negative" icon="delete_forever"
+                                        <div class=""><q-btn dense unelevated color="negative" no-caps type="submit" name="DeleteFind" label="${ec.getL10n().localize("Delete")}"
                                                 onclick="return confirm('${ec.getL10n().localize("Delete")} ${formListFind.description?js_string}?');"></q-btn></div>
                                     </#if>
                                     <#if userDefaultFormListFindId == formListFind.formListFindId>
-                                        <div class="q-my-auto big-row-item"><q-btn dense outline no-caps type="submit" name="ClearDefault" color="info" label="${ec.getL10n().localize("Clear Default")}"></q-btn></div>
+                                        <div class=""><q-btn dense unelevated color="primary" no-caps type="submit" name="ClearDefault" color="info" label="${ec.getL10n().localize("Clear Default")}"></q-btn></div>
                                     <#else>
-                                        <div class="q-my-auto big-row-item"><q-btn dense outline no-caps type="submit" name="MakeDefault" label="${ec.getL10n().localize("Make Default")}"></q-btn></div>
+                                        <div class=""><q-btn dense unelevated color="primary" no-caps type="submit" name="MakeDefault" label="${ec.getL10n().localize("Make Default")}"></q-btn></div>
                                     </#if>
+                                    </div>
                                 </m-form>
                             </div>
                         </#if>
+                        <q-separator size="30px"></q-separator>
                     </#list>
                 </m-container-dialog>
             </#if>
