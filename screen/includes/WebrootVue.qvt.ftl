@@ -94,7 +94,7 @@ along with this software (see the LICENSE.md file). If not, see
                                     <template v-if="(subscreenIndex+1)>${moreSize}">
                                         <q-item clickable v-close-popup tabindex="0" :to="subscreen.pathWithParams" :class="{'bg-secondary text-white':subscreen.active}">
                                             <q-item-section avatar>
-                                                <q-icon :name="(subscreen.imageType == 'icon')?subscreen.image:'img:' + subscreen.image"></q-icon>
+                                                <q-icon :name="(subscreen.imageType == 'icon')?subscreen.image:'img:' + subscreen.image" size="13px"></q-icon>
                                             </q-item-section>
                                             <q-item-section>
                                                 <q-item-label>{{subscreen.title}}</q-item-label>
