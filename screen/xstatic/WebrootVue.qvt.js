@@ -353,7 +353,7 @@ Vue.component('m-container-box', {
             '<span v-if="title && title.length" @click="toggleBody" :class="\'text-\' + type">{{title}}</span>' +
             '<slot name="header"></slot>' +
             '<q-space></q-space>' +
-            '<slot name="toolbar"></slot>' +
+            '<div class="q-gutter-x-xs"><slot name="toolbar"></slot></div>' +
         '</q-card-actions>' +
         '<q-card-section :class="{in:isBodyOpen}" style="padding:0px;"><slot></slot></q-card-section>' +
     '</q-card>',
