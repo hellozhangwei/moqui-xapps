@@ -604,7 +604,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
     <#assign containerStyle = ec.getResource().expandNoL10n(fieldSubNode["@container-style"]!, "")>
     <#assign curFieldTitle><@fieldTitle fieldSubNode/></#assign>
     <#if bigRow>
-        <div class="q-mx-sm q-my-auto big-row-item">
+        <div class="q-ma-sm big-row-item">
     <#else>
         <div class="q-ma-md <#if containerStyle?has_content> ${containerStyle}</#if>">
     </#if>
