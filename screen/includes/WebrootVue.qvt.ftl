@@ -11,8 +11,6 @@ You should have received a copy of the CC0 Public Domain Dedication
 along with this software (see the LICENSE.md file). If not, see
 <http://creativecommons.org/publicdomain/zero/1.0/>.
 -->
-<#assign moreSize=10>
-
 <div id="apps-root" style="display:none;"><#-- NOTE: webrootVue component attaches here, uses this and below for template -->
     <input type="hidden" id="confMoquiSessionToken" value="${ec.web.sessionToken}">
     <input type="hidden" id="confAppHost" value="${ec.web.getHostName(true)}">
@@ -46,13 +44,11 @@ along with this software (see the LICENSE.md file). If not, see
                     <q-btn stretch flat no-caps class="text-bold" style="font-size: 21px;font-weight: 400"
                            :icon="(navMenuList[1].imageType == 'icon')?navMenuList[1].image:'img:' + navMenuList[1].image"
                            :label="navMenuList[1].title"></q-btn>
-                    <#--<q-separator dark vertical></q-separator>-->
-                    <#--<q-toolbar-title>{{navMenuList[1].title}}</q-toolbar-title>-->
                 </template>
 
                 <template v-if="navMenuList[1]">
                     <template v-for="(subscreen, subscreenIndex) in navMenuList[1].subscreens">
-                        <template v-if="(subscreenIndex+1)<=${moreSize}">
+                        <template v-if="(subscreenIndex+1)<=topMenuBreakPoint">
                             <q-btn stretch flat stack no-caps size="13px"
                                    :icon="(subscreen.imageType == 'icon')?subscreen.image:'img:' + subscreen.image"
                                    :class="{'bg-secondary':subscreen.active}" :to="subscreen.pathWithParams" :label="subscreen.title">
@@ -62,36 +58,13 @@ along with this software (see the LICENSE.md file). If not, see
                     </template>
                 </template>
 
-                <template v-if="(navMenuList[1] && navMenuList[1].subscreens && navMenuList[1].subscreens.length+1)>${moreSize}">
-                    <#--<q-btn-dropdown flat no-border-radius no-caps content-style="font-size:13px">
-                        <template v-slot:label>
-                            <div>
-                                <q-icon name="more_horiz"></q-icon>
-                                <div class="text-center">${ec.l10n.localize("More")}</div>
-                            </div>
-                        </template>
-                        <q-list>
-                            <template v-for="(subscreen, subscreenIndex) in navMenuList[1].subscreens">
-                                <template v-if="(subscreenIndex+1)>${moreSize}">
-                                    <q-item clickable v-close-popup tabindex="0" :to="subscreen.pathWithParams">
-                                        <q-item-section avatar>
-                                            <q-icon :name="(subscreen.imageType == 'icon')?subscreen.image:'img:' + subscreen.image"></q-icon>
-                                        </q-item-section>
-                                        <q-item-section>
-                                            <q-item-label>{{subscreen.title}}</q-item-label>
-                                        </q-item-section>
-
-                                    </q-item>
-                                </template>
-                            </template>
-                        </q-list>
-                    </q-btn-dropdown>-->
+                <template v-if="(navMenuList[1] && navMenuList[1].subscreens && navMenuList[1].subscreens.length+1)>topMenuBreakPoint">
 
                     <q-btn stretch flat stack no-caps size="13px" label="${ec.l10n.localize("More")}" icon="more_horiz">
                         <q-menu>
                             <q-list dense>
                                 <template v-for="(subscreen, subscreenIndex) in navMenuList[1].subscreens">
-                                    <template v-if="(subscreenIndex+1)>${moreSize}">
+                                    <template v-if="(subscreenIndex+1)>topMenuBreakPoint">
                                         <q-item clickable v-close-popup tabindex="0" :to="subscreen.pathWithParams" :class="{'bg-secondary text-white':subscreen.active}">
                                             <q-item-section avatar>
                                                 <q-icon :name="(subscreen.imageType == 'icon')?subscreen.image:'img:' + subscreen.image" size="13px"></q-icon>
@@ -106,10 +79,9 @@ along with this software (see the LICENSE.md file). If not, see
                         </q-menu>
                     </q-btn>
                 </template>
-                <#--<q-separator dark vertical></q-separator>-->
-                <template v-if="navMenuList[1] && navMenuList[1].subscreens && navMenuList[1].subscreens.length>${moreSize}">
+                <template v-if="navMenuList[1] && navMenuList[1].subscreens && navMenuList[1].subscreens.length>topMenuBreakPoint">
                     <template v-for="(subscreen, subscreenIndex) in navMenuList[1].subscreens">
-                        <template v-if="(subscreenIndex+1)>${moreSize} && subscreen.active">
+                        <template v-if="(subscreenIndex+1)>topMenuBreakPoint && subscreen.active">
                             <q-btn stretch flat stack no-caps size="13px"
                                    :icon="(subscreen.imageType == 'icon')?subscreen.image:'img:' + subscreen.image"
                                    :class="{'bg-secondary':subscreen.active}" :to="subscreen.pathWithParams" :label="subscreen.title">

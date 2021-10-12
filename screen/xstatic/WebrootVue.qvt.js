@@ -2053,7 +2053,7 @@ moqui.webrootVue = new Vue({
         activeSubscreens:[], navMenuList:[], navHistoryList:[], navPlugins:[], accountPlugins:[], notifyHistoryList:[],
         lastNavTime:Date.now(), loading:0, currentLoadRequest:null, activeContainers:{},
         moquiSessionToken:"", appHost:"", appRootPath:"", userId:"", locale:"en",
-        notificationClient:null, qzVue:null, leftOpen:false, moqui:moqui },
+        notificationClient:null, qzVue:null, leftOpen:false, moqui:moqui ,topMenuBreakPoint:10},
     methods: {
         setUrl: function(url, bodyParameters, onComplete) {
             // cancel current load if needed
@@ -2335,6 +2335,30 @@ moqui.webrootVue = new Vue({
         var accountPluginUrlList = [];
         $('.confAccountPluginUrl').each(function(idx, el) { accountPluginUrlList.push($(el).val()); });
         this.addAccountPluginsWait(accountPluginUrlList, 0);
+
+        //window size
+        //xs Up to 599px
+        //sm Up to 1023px
+        //md Up to 1439px
+        //lg Up to 1919px
+        //xl Bigger than 1920px
+        //console.log("=========console.log(this.$q.screen)============="+JSON.stringify(this.$q.screen))
+        //maybe we can change topMenuBreakPoint by user language
+        if(this.$q.screen.lt.xs) {
+
+        }else if(this.$q.screen.lt.sm) {
+
+        }else if(this.$q.screen.lt.md) {
+
+        }else if(this.$q.screen.lt.lg) {
+
+        }else if(this.$q.screen.lt.xl) {
+            this.topMenuBreakPoint=10
+        } else {
+            //great than xl
+            this.topMenuBreakPoint=16
+            console.log("========great xl============")
+        }
     },
     mounted: function() {
         var jqEl = $(this.$el);
