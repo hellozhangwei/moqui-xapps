@@ -429,11 +429,15 @@ Vue.component('m-dialog', {
 Vue.component('m-container-dialog', {
     name: "mContainerDialog",
     props: { id:String, color:String, buttonText:String, buttonClass:String, title:String, width:{type:String},
-        openDialog:{type:Boolean,'default':false}, buttonIcon:{type:String,'default':'open_in_new'}, buttonFlat:{type:Boolean}, buttonOutline:{type:Boolean}},
+        openDialog:{type:Boolean,'default':false}
+        , buttonIcon:{type:String,'default':'open_in_new'}
+        , buttonFlat:{type:Boolean}
+        , buttonOutline:{type:Boolean}
+        , buttonSize:{type:String,'default':'sm'}},
     data: function() { return { isShown:false }},
     template:
     '<span>' +
-        '<span @click="show()"><slot name="button"><q-btn unelevated dense size="sm" :flat="buttonFlat" :outline="buttonOutline" no-caps :icon="buttonIcon" :label="buttonText" :color="color" :class="buttonClass"></q-btn></slot></span>' +
+        '<span @click="show()"><slot name="button"><q-btn unelevated dense :size="buttonSize" :flat="buttonFlat" :outline="buttonOutline" no-caps :icon="buttonIcon" :label="buttonText" :color="color" :class="buttonClass"></q-btn></slot></span>' +
         '<m-dialog v-model="isShown" :id="id" :title="title" :color="color" :width="width"><slot></slot></m-dialog>' +
     '</span>',
     methods: { show: function() { this.isShown = true; }, hide: function() { this.isShown = false; } },
