@@ -2343,22 +2343,43 @@ moqui.webrootVue = new Vue({
         //lg Up to 1919px
         //xl Bigger than 1920px
         //console.log("=========console.log(this.$q.screen)============="+JSON.stringify(this.$q.screen))
-        //maybe we can change topMenuBreakPoint by user language
-        if(this.$q.screen.lt.xs) {
+        //console.log("=========this.locale============"+this.locale)
+        if(this.locale=='zh' || this.locale=='zh-cn') {
+            if(this.$q.screen.lt.xs) {
 
-        }else if(this.$q.screen.lt.sm) {
+            }else if(this.$q.screen.lt.sm) {
 
-        }else if(this.$q.screen.lt.md) {
-
-        }else if(this.$q.screen.lt.lg) {
-
-        }else if(this.$q.screen.lt.xl) {
-            this.topMenuBreakPoint=10
+            }else if(this.$q.screen.lt.md) {
+                console.log("========lt md============")
+            }else if(this.$q.screen.lt.lg) {
+                console.log("========lt lg============")
+            }else if(this.$q.screen.lt.xl) {
+                console.log("========lt xl============")
+                this.topMenuBreakPoint=12
+            } else {
+                //great than xl
+                this.topMenuBreakPoint=20
+                console.log("========great xl============")
+            }
         } else {
-            //great than xl
-            this.topMenuBreakPoint=16
-            console.log("========great xl============")
+            if(this.$q.screen.lt.xs) {
+
+            }else if(this.$q.screen.lt.sm) {
+
+            }else if(this.$q.screen.lt.md) {
+                console.log("========lt md============")
+            }else if(this.$q.screen.lt.lg) {
+                console.log("========lt lg============")
+            }else if(this.$q.screen.lt.xl) {
+                console.log("========lt xl============")
+                this.topMenuBreakPoint=10
+            } else {
+                //great than xl
+                this.topMenuBreakPoint=16
+                console.log("========great xl============")
+            }
         }
+
     },
     mounted: function() {
         var jqEl = $(this.$el);
