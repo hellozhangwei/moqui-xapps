@@ -121,7 +121,7 @@ td, .td { min-height:21px; }
 /* NOTE: these are based on quasar.css version 1.12.11 */
 /* lines 4216-4531 */
 .q-table .thead .tr, .q-table .tbody .td { height: 48px; }
-.q-table .th { font-weight: 500; font-size: 13px; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+.q-table .th { font-weight: 500; font-size: 13px; /*-webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;*/ }
 .q-table .th, .q-table .td { padding: 7px 16px; background-color: inherit; }
 .q-table .thead, .q-table .td, .q-table .th { border-style: solid; border-width: 0; }
 .q-table .tbody .td { font-size: 14px; } /* was 13px in quasar css */
