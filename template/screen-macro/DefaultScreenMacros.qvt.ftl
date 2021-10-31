@@ -242,9 +242,22 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
 <#macro linkFormLink linkNode linkFormId linkText urlInstance>
     <#assign buttonFlat = "">
     <#if linkNode["@button-flat"]?has_content><#assign buttonFlat = linkNode["@button-flat"]></#if>
+
+    <#assign buttonOutline = "">
+    <#if linkNode["@button-outline"]?has_content><#assign buttonOutline = linkNode["@button-outline"]></#if>
+
+    <#assign buttonStack = "">
+    <#if linkNode["@button-stack"]?has_content><#assign buttonStack = linkNode["@button-stack"]></#if>
+
+    <#if linkNode["@button-size"]?has_content><#assign buttonSize = linkNode["@button-size"]><#else ><#assign buttonSize = 'sm'></#if>
+
     <#assign iconClass = linkNode["@icon"]!>
     <#if !iconClass?has_content && linkNode["@text"]?has_content><#assign iconClass = sri.getThemeIconClass(linkNode["@text"])!></#if>
     <#assign iconClass = ec.getResource().expandNoL10n(iconClass!, "")/>
+    <#if iconClass?has_content && iconClass.substring(iconClass.length()-3, iconClass.length())=='png'>
+        <#assign iconClass = 'img:' + iconClass/>
+    </#if>
+
     <#assign badgeMessage = ec.getResource().expand(linkNode["@badge"]!, "")/>
 
     <#assign labelWrapper = linkNode["@link-type"]! == "anchor" && linkNode?ancestors("form-single")?has_content>
@@ -255,9 +268,11 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
 
     <#if urlInstance.disableLink>
         <span>
-            <q-btn dense no-caps disabled unelevated <#rt>
+            <q-btn dense no-caps disabled unelevated size="${buttonSize}"<#rt>
+                    <#t> <#if buttonStack?? && buttonStack=='true'> stack </#if>
                     <#--<#if linkNode["@link-type"]! != "anchor" && linkNode["@link-type"]! != "hidden-form-link"> <#else>flat</#if>-->
                     <#t> <#if buttonFlat?? && buttonFlat=='true'> flat </#if>
+                    <#t> <#if buttonOutline?? && buttonOutline=='true'> outline </#if>
                     <#t> class="m-link<#if .node["@style"]?has_content> ${ec.getResource().expandNoL10n(.node["@style"], "")}</#if>"
                     <#t><#if linkFormId?has_content> id="${linkFormId}"</#if><#if linkText?has_content> label="${linkText}"</#if>>
                 <#if iconClass?has_content><i class="${iconClass}"></i></#if><#if linkNode["image"]?has_content><#visit linkNode["image"][0]></#if>
@@ -281,22 +296,27 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
                 <#-- TODO non q-btn approach might simulate styles like old stuff, initial attempt failed though: <#if linkNode["@link-type"]! != "anchor">btn btn-${linkNode["@btn-type"]!"primary"} btn-sm</#if> -->
                 <#if linkNode["@link-type"]! != "anchor">
                     <#t>>
-                    <q-btn dense size="sm" unelevated no-caps color="<@getQuasarColor linkNode["@btn-type"]!"primary"/>"<#rt>
+                    <q-btn dense size="${buttonSize}" unelevated no-caps color="<@getQuasarColor linkNode["@btn-type"]!"primary"/>"<#rt>
+                        <#t> <#if buttonStack?? && buttonStack=='true'> stack </#if>
                         <#t> <#if buttonFlat?? && buttonFlat=='true'> flat </#if>
+                        <#t> <#if buttonOutline?? && buttonOutline=='true'> outline </#if>
                         <#t> class="m-link<#if linkNode["@style"]?has_content> ${ec.getResource().expandNoL10n(linkNode["@style"], "")}</#if>">
                 <#else>
                     <#t> class="<#if linkNode["@style"]?has_content> ${ec.getResource().expandNoL10n(linkNode["@style"], "")}</#if>">
                 </#if>
                 <#t><#if linkNode["@tooltip"]?has_content><q-tooltip>${ec.getResource().expand(linkNode["@tooltip"], "")}</q-tooltip></#if>
-                <#t><#if iconClass?has_content><i class="${iconClass} q-icon<#if linkText?? && linkText?trim?has_content> on-left</#if>"></i> </#if><#rt>
+                <#--<#t><#if iconClass?has_content><i class="${iconClass} q-icon<#if linkText?? && linkText?trim?has_content> on-left</#if>"></i> </#if><#rt>-->
+                <#t><#if iconClass?has_content><q-icon name="${iconClass}" /> </#if>
                 <#t><#if linkNode["image"]?has_content><#visit linkNode["image"][0]><#else>${linkText}</#if>
                 <#t><#if badgeMessage?has_content> <q-badge class="on-right" transparent>${badgeMessage}</q-badge></#if>
                 <#if linkNode["@link-type"]! != "anchor"></q-btn></#if>
             <#t></${linkElement}>
         <#else>
             <#if linkFormId?has_content>
-            <#rt><q-btn dense size="sm" unelevated no-caps type="submit" form="${linkFormId}" id="${linkFormId}_button" color="<@getQuasarColor linkNode["@btn-type"]!"primary"/>"
+            <#rt><q-btn dense size="${buttonSize}" unelevated no-caps type="submit" form="${linkFormId}" id="${linkFormId}_button" color="<@getQuasarColor linkNode["@btn-type"]!"primary"/>"
+                    <#t> <#if buttonStack?? && buttonStack=='true'> stack </#if>
                     <#t> <#if buttonFlat?? && buttonFlat=='true'> flat </#if>
+                    <#t> <#if buttonOutline?? && buttonOutline=='true'> outline </#if>
                     <#t> class="<#if linkNode["@style"]?has_content>${ec.getResource().expandNoL10n(linkNode["@style"], "")}</#if>"
                     <#t><#if confirmationMessage?has_content> onclick="return confirm('${confirmationMessage?js_string}')"</#if>>
                     <#t><#if linkNode["@tooltip"]?has_content><q-tooltip>${ec.getResource().expand(linkNode["@tooltip"], "")}</q-tooltip></#if>
@@ -1501,7 +1521,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
     <#assign containerStyle = ec.getResource().expandNoL10n(headerFieldNode["@container-style"]!, "")>
     <#assign headerAlign = fieldNode["@align"]!"left">
     <#t><div class="form-title<#if containerStyle?has_content> ${containerStyle}</#if><#if headerAlign == "center"> text-center<#elseif headerAlign == "right"> text-right</#if>">
-        <#t><#if fieldSubNode["submit"]?has_content>&nbsp;<#else><@fieldTitle fieldSubNode/></#if>
+        <#t><#if fieldSubNode["submit"]?has_content>&nbsp;<#else><span><@fieldTitle fieldSubNode/></span></#if>
         <#if fieldSubNode["@show-order-by"]! == "true" || fieldSubNode["@show-order-by"]! == "case-insensitive">
             <#assign caseInsensitive = fieldSubNode["@show-order-by"]! == "case-insensitive">
             <#assign curFieldName = fieldNode["@name"]>
@@ -1578,7 +1598,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
     <#if fieldSubNode["hidden"]?has_content><#recurse fieldSubNode/><#return></#if>
     <#assign containerStyle = ec.getResource().expandNoL10n(fieldSubNode["@container-style"]!, "")>
     <#if fieldSubParent["@align"]! == "right"><#assign containerStyle = containerStyle + " text-right"><#elseif fieldSubParent["@align"]! == "center"><#assign containerStyle = containerStyle + " text-center"></#if>
-    <#if !isMultiFinalRow && !isHeaderField><#if skipCell><div class="form-group<#if containerStyle?has_content>  ${containerStyle}</#if>"><#else><td class="form-group<#if containerStyle?has_content> ${containerStyle}</#if>"></#if></#if>
+    <#if !isMultiFinalRow && !isHeaderField><#if skipCell><div class="q-ma-sm form-group<#if containerStyle?has_content>  ${containerStyle}</#if>"><#else><td class="form-group<#if containerStyle?has_content> ${containerStyle}</#if>"></#if></#if>
     <#t>${sri.pushContext()}
     <#list fieldSubNode?children as widgetNode><#if widgetNode?node_name == "set">${sri.setInContext(widgetNode)}</#if></#list>
     <#list fieldSubNode?children as widgetNode>
