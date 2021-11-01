@@ -542,7 +542,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
     <#assign rowContent = rowContent?trim>
     <#assign fsFieldRow = false><#assign fsBigRow = false>
     <#if rowContent?has_content>
-    <div class="q-my-sm big-row"<#if .node["@justify"]?has_content> style="justify-content:${.node["@justify"]};"</#if>>
+    <div class="q-my-sm big-row row items-center"<#if .node["@justify"]?has_content> style="justify-content:${.node["@justify"]};"</#if>>
     <#if .node["@title"]?has_content>
         <div class="q-mx-sm q-my-auto big-row-item">${ec.getResource().expand(.node["@title"], "")}</div>
     </#if>
