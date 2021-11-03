@@ -94,7 +94,13 @@ ${sri.renderSection(.node["@name"])}
         <#-- NOTE: direct use of the m-container-box component would not use template elements but rather use the 'slot' attribute directly on the child elements which we can't do here -->
         <#if boxHeader??><template slot="header"><#recurse boxHeader></template></#if>
         <#if .node["box-toolbar"]?has_content><template slot="toolbar"><#recurse .node["box-toolbar"][0]></template></#if>
-        <#if .node["box-body"]?has_content><m-box-body<#if .node["box-body"][0]["@height"]?has_content> height="${.node["box-body"][0]["@height"]}"</#if>><#recurse .node["box-body"][0]></m-box-body></#if>
+        <#if .node["box-body"]?has_content>
+            <m-box-body<#rt>
+                <#t><#if .node["box-body"][0]["@height"]?has_content> height="${.node["box-body"][0]["@height"]}"</#if><#rt>
+                <#t><#if .node["box-body"][0]["@style"]?has_content> bodyStyle="${ec.getResource().expandNoL10n(.node["box-body"][0]["@style"], "")}"</#if>>
+                <#recurse .node["box-body"][0]>
+            </m-box-body>
+        </#if>
         <#if .node["box-body-nopad"]?has_content><#recurse .node["box-body-nopad"][0]></#if>
     </m-container-box>
 </#macro>
