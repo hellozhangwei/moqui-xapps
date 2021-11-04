@@ -42,6 +42,7 @@ along with this software (see the LICENSE.md file). If not, see
 
                 <template v-if="navMenuList[1]">
                     <q-btn stretch flat no-caps class="text-bold" style="font-size: 21px;font-weight: 400"
+                           :to="navMenuList[1].path"
                            :icon="(navMenuList[1].imageType == 'icon')?navMenuList[1].image:'img:' + navMenuList[1].image"
                            :label="navMenuList[1].title"></q-btn>
                 </template>
