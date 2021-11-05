@@ -1073,7 +1073,7 @@ Vue.component('m-form-column-config', {
                     '</q-btn-group></q-item-section>' +
                 '</q-item>' +
             '</q-list>' +
-            '<div class="q-py-md row justify-end">' +
+            '<div class="q-ma-sm q-gutter-sm row justify-end">' +
                 '<q-btn dense unelevated color="primary" no-caps @click.prevent="saveColumns()" label="Save Changes"></q-btn>' +
                 '<q-btn dense unelevated color="primary" no-caps @click.prevent="resetColumns()" label="Undo Changes"></q-btn>' +
                 '<q-btn dense unelevated color="primary" no-caps @click.prevent="resetToDefault()" label="Reset to Default"></q-btn>' +
