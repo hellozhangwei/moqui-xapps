@@ -186,6 +186,13 @@ along with this software (see the LICENSE.md file). If not, see
                     </template>
                 </template>
             </div>
+            <div class="q-pa-sm bg-white" style="font-size:12px">
+                <q-icon name="home" color="grey"></q-icon>
+                <template v-for="(navMenuItem, menuIndex) in navMenuList">
+                    <m-link :href="getNavHref(menuIndex)" class="gt-xs text-grey">{{navMenuItem.title}}</m-link>
+                    <q-icon v-if="menuIndex < (navMenuList.length - 1)" name="chevron_right" color="grey" class="gt-xs"></q-icon>
+                </template>
+            </div>
         </q-header>
 
         <#--<q-drawer v-model="leftOpen" side="left" overlay bordered>
