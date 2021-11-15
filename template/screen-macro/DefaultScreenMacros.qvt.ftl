@@ -727,7 +727,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
         <tr class="form-list-nav-row bg-grey-3"><th colspan="${numColumns}"><div class="row q-pa-md">
             <div class="col-8 text-left"><div class="row q-gutter-x-xs">
             <#if hasTitle>
-                <div class="text-h5">${formNode["@title"]}</div>
+                <div class="text-h5">${ec.getResource().expand(formNode["@title"]!, "")}</div>
             </#if>
             <#if isSavedFinds>
                 <#assign userFindInfoList = formListInfo.getUserFormListFinds(ec)>
