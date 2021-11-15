@@ -685,6 +685,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
     <#assign numColumns = (mainColInfoList?size)!100>
     <#if numColumns == 0><#assign numColumns = 100></#if>
     <#if isRowSelection!false><#assign numColumns = numColumns + 1></#if>
+    <#assign hasTitle = formNode["@title"]?has_content>
     <#assign isSavedFinds = formNode["@saved-finds"]! == "true">
     <#assign isSelectColumns = formNode["@select-columns"]! == "true">
     <#assign isPaginated = (!(formNode["@paginate"]! == "false") && context[listName + "Count"]?? && (context[listName + "Count"]! > 0) &&
@@ -722,9 +723,12 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
             </#if></#list>
         </#assign>
     </#if>
-    <#if (isHeaderDialog || isSavedFinds || isSelectColumns || isPaginated) && hideNav! != "true">
+    <#if (isHeaderDialog || isSavedFinds || isSelectColumns || isPaginated || hasTitle) && hideNav! != "true">
         <tr class="form-list-nav-row bg-grey-3"><th colspan="${numColumns}"><div class="row q-pa-md">
             <div class="col-8 text-left"><div class="row q-gutter-x-xs">
+            <#if hasTitle>
+                <div class="text-h5">${formNode["@title"]}</div>
+            </#if>
             <#if isSavedFinds>
                 <#assign userFindInfoList = formListInfo.getUserFormListFinds(ec)>
                 <#if userFindInfoList?has_content>
