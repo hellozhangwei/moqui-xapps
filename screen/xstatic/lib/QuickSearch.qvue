@@ -1,7 +1,7 @@
 <!-- This software is in the public domain under CC0 1.0 Universal plus a Grant of Patent License. -->
 <template>
     <q-input v-if="searchPath"
-             placeholder="Search..." rounded outlined dark dense
+             placeholder="Search..." rounded outlined dense
              name="queryString"
              v-model="queryString"
              :size="inputSize"

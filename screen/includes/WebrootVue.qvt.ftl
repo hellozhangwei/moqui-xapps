@@ -31,22 +31,113 @@ along with this software (see the LICENSE.md file). If not, see
     <#-- for layout options see: https://quasar.dev/layout/layout -->
     <#-- to build a layout use the handy Quasar tool: https://quasar.dev/layout-builder -->
     <q-layout view="hHh LpR fFf">
-        <q-header reveal bordered class="${headerClass}" id="top" style="border-bottom:none;background: linear-gradient(145deg,#1976d2 11%,#0f477e 75%) !important">
-            <q-toolbar style="border-bottom:solid 5px #26a69a;padding-left: 0px">
-
-                <#--<q-btn dense flat icon="apps" class="q-mr-sm" @click="toggleLeftOpen()"></q-btn>-->
-                <template v-if="navMenuList[0]">
-                    <q-btn stretch flat icon="apps" :to="navMenuList[0].path"></q-btn>
-                </template>
-                <q-separator dark vertical></q-separator>
-
+        <q-header reveal bordered class="${headerClass}" id="top" style="border-bottom:none">
+            <q-toolbar class="bg-white text-primary">
+                <#assign headerLogoList = sri.getThemeValues("STRT_HEADER_LOGO")>
+                <#if headerLogoList?has_content>
+                    <m-link href="/apps">
+                        <img src="${sri.buildUrl(headerLogoList?first).getUrl()}" alt="Home" height="32">
+                    </m-link>
+                </#if>
                 <template v-if="navMenuList[1]">
-                    <q-btn stretch flat no-caps class="text-bold" style="font-size: 21px;font-weight: 400"
+                    <!--<q-btn stretch dense flat no-caps class="text-bold" style="font-size: 21px;font-weight: 400"
                            :to="navMenuList[1].path"
-                           :icon="(navMenuList[1].imageType == 'icon')?navMenuList[1].image:'img:' + navMenuList[1].image"
-                           :label="navMenuList[1].title"></q-btn>
+                           :label="navMenuList[1].title"></q-btn>-->
+                    <!--:icon="(navMenuList[1].imageType == 'icon')?navMenuList[1].image:'img:' + navMenuList[1].image"-->
+                    <q-toolbar-title>{{navMenuList[1].title}}</q-toolbar-title>
                 </template>
 
+                <q-space></q-space>
+
+                <#-- spinner, usually hidden -->
+                <q-circular-progress indeterminate size="20px" color="light-blue" class="q-ma-xs" :class="{ hidden: loading < 1 }"></q-circular-progress>
+
+                <#-- QZ print options placeholder -->
+                <component :is="qzVue" ref="qzVue"></component>
+
+                <#-- screen documentation/help -->
+                <q-btn dense round flat icon="help_outline" color="info" :class="{hidden:!documentMenuList.length}">
+                    <q-tooltip>${ec.l10n.localize("Documentation")}</q-tooltip>
+                    <q-menu><q-list dense class="q-my-md">
+                        <q-item v-for="screenDoc in documentMenuList" :key="screenDoc.index"><q-item-section>
+                            <m-dynamic-dialog :url="currentPath + '/screenDoc?docIndex=' + screenDoc.index" :button-text="screenDoc.title" :title="screenDoc.title"></m-dynamic-dialog>
+                        </q-item-section></q-item>
+                    </q-list></q-menu>
+                </q-btn>
+
+                <#-- nav plugins -->
+                <template v-for="navPlugin in navPlugins"><component :is="navPlugin"></component></template>
+
+                <#-- notify history -->
+                <q-btn dense round flat icon="notifications" size="12px">
+                    <q-tooltip>${ec.l10n.localize("Notify History")}</q-tooltip>
+                    <q-menu>
+                        <q-list separator style="min-width: 300px">
+                            <q-item v-for="histItem in notifyHistoryList">
+                                <q-item-section avatar>
+                                    <q-icon name="notifications" :color="getQuasarColor(histItem.type)"/>
+                                </q-item-section>
+                                <q-item-section>{{histItem.message}}</q-item-section>
+                                <q-item-section side>{{histItem.time}}</q-item-section>
+
+                            </q-item>
+                        </q-list>
+                    </q-menu>
+                </q-btn>
+
+                <#-- screen history menu -->
+                <#-- get initial history from server? <#assign screenHistoryList = ec.web.getScreenHistory()><#list screenHistoryList as screenHistory><#if (screenHistory_index >= 25)><#break></#if>{url:pathWithParams, name:title}</#list> -->
+                <q-btn dense round flat icon="history" size="12px">
+                    <q-tooltip>${ec.l10n.localize("Screen History")}</q-tooltip>
+                    <q-menu><q-list dense style="min-width: 300px">
+                        <q-item v-for="histItem in navHistoryList" :key="histItem.pathWithParams" clickable v-close-popup><q-item-section>
+                            <m-link :href="histItem.pathWithParams">
+                                <template v-if="histItem.image">
+                                    <i v-if="histItem.imageType === 'icon'" :class="histItem.image" style="padding-right: 8px;"></i>
+                                    <img v-else :src="histItem.image" :alt="histItem.title" width="18" style="padding-right: 4px;">
+                                </template>
+                                <i v-else class="fa fa-link" style="padding-right: 8px;"></i>
+                                {{histItem.title}}
+                            </m-link>
+                        </q-item-section></q-item>
+                    </q-list></q-menu>
+                </q-btn>
+                <template v-if="navMenuList[0]">
+                    <q-btn dense round flat icon="apps" :to="navMenuList[0].path"><q-tooltip>Applications</q-tooltip></q-btn>
+                </template>
+                <q-separator vertical></q-separator>
+
+                <q-btn dense stretch flat no-caps icon="account_circle" size="12px" label="${(ec.user.userAccount.userFullName)!ec.l10n.localize("Account")}">
+                    <q-tooltip>${(ec.user.userAccount.userFullName)!ec.l10n.localize("Account")}</q-tooltip>
+                    <q-menu><q-card flat bordered><#-- always matching header (dark): class="${headerClass}" -->
+                        <q-card-section horizontal class="q-pa-md">
+                            <q-card-section>
+                            <#-- account plugins -->
+                            <template v-for="accountPlugin in accountPlugins"><component :is="accountPlugin"></component></template>
+                        </q-card-section>
+                        <q-separator vertical></q-separator>
+                        <q-card-actions vertical class="justify-around q-px-md">
+                            <div class="row no-wrap">
+                                <q-btn flat dense to="/apps/my/User/Account" icon="person" size="12px">
+                                    <q-tooltip>${ec.l10n.localize("Account")}</q-tooltip></q-btn>
+                                <#-- dark/light switch -->
+                                <q-btn flat dense @click.prevent="switchDarkLight()" icon="invert_colors" size="12px">
+                                    <q-tooltip>${ec.l10n.localize("Switch Dark/Light")}</q-tooltip></q-btn>
+                                <#-- logout button -->
+                                <q-btn flat dense icon="logout" size="12px" color="negative" type="a" href="${sri.buildUrl("/Login/logout").url}"
+                                onclick="return confirm('${ec.l10n.localize("Logout")} ${(ec.user.userAccount.userFullName)!''}?')">
+                                <q-tooltip>${ec.l10n.localize("Logout")} ${(ec.user.userAccount.userFullName)!''}</q-tooltip></q-btn>
+                            </div>
+
+                        </q-card-actions>
+                        </q-card-section>
+                    </q-card></q-menu>
+                </q-btn>
+            </q-toolbar>
+
+            <q-toolbar style="height:60px;border-bottom:solid 5px #26a69a;padding-left: 0px;background: linear-gradient(145deg,#1976d2 11%,#0f477e 75%) !important">
+
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 <template v-if="navMenuList[1]">
                     <template v-for="(subscreen, subscreenIndex) in navMenuList[1].subscreens">
                         <template v-if="(subscreenIndex+1)<=topMenuBreakPoint">
@@ -54,7 +145,6 @@ along with this software (see the LICENSE.md file). If not, see
                                    :icon="(subscreen.imageType == 'icon')?subscreen.image:'img:' + subscreen.image"
                                    :class="{'bg-secondary':subscreen.active}" :to="subscreen.pathWithParams" :label="subscreen.title">
                             </q-btn>
-                            <#--<q-separator dark vertical></q-separator>-->
                         </template>
                     </template>
                 </template>
@@ -90,91 +180,7 @@ along with this software (see the LICENSE.md file). If not, see
                         </template>
                     </template>
                 </template>
-                <q-space></q-space>
 
-                <#--
-                <a :href="currentLinkUrl.replace('/qapps','/vapps')" target="_blank" class="text-warning on-left">BETA PREVIEW<q-tooltip>Click for current production-ready UI (/vapps)</q-tooltip></a>
-                -->
-                <#-- spinner, usually hidden -->
-                <q-circular-progress indeterminate size="20px" color="light-blue" class="q-ma-xs" :class="{ hidden: loading < 1 }"></q-circular-progress>
-
-                <#-- QZ print options placeholder -->
-                <component :is="qzVue" ref="qzVue"></component>
-
-                <#-- screen documentation/help -->
-                <q-btn dense round flat icon="help_outline" color="info" :class="{hidden:!documentMenuList.length}">
-                    <q-tooltip>${ec.l10n.localize("Documentation")}</q-tooltip>
-                    <q-menu><q-list dense class="q-my-md">
-                            <q-item v-for="screenDoc in documentMenuList" :key="screenDoc.index"><q-item-section>
-                                    <m-dynamic-dialog :url="currentPath + '/screenDoc?docIndex=' + screenDoc.index" :button-text="screenDoc.title" :title="screenDoc.title"></m-dynamic-dialog>
-                                </q-item-section></q-item>
-                        </q-list></q-menu>
-                </q-btn>
-
-                <#-- nav plugins -->
-                <template v-for="navPlugin in navPlugins"><component :is="navPlugin"></component></template>
-
-                <#-- notify history -->
-                <q-btn dense round flat icon="notifications" size="12px">
-                    <q-tooltip>${ec.l10n.localize("Notify History")}</q-tooltip>
-                    <q-menu>
-                        <q-list separator style="min-width: 300px">
-                            <q-item v-for="histItem in notifyHistoryList">
-                                <q-item-section avatar>
-                                    <q-icon name="notifications" :color="getQuasarColor(histItem.type)"/>
-                                </q-item-section>
-                                <q-item-section>{{histItem.message}}</q-item-section>
-                                <q-item-section side>{{histItem.time}}</q-item-section>
-
-                            </q-item>
-                        </q-list>
-                    </q-menu>
-                </q-btn>
-
-                <#-- screen history menu -->
-                <#-- get initial history from server? <#assign screenHistoryList = ec.web.getScreenHistory()><#list screenHistoryList as screenHistory><#if (screenHistory_index >= 25)><#break></#if>{url:pathWithParams, name:title}</#list> -->
-                <q-btn dense round flat icon="history" size="12px">
-                    <q-tooltip>${ec.l10n.localize("Screen History")}</q-tooltip>
-                    <q-menu><q-list dense style="min-width: 300px">
-                            <q-item v-for="histItem in navHistoryList" :key="histItem.pathWithParams" clickable v-close-popup><q-item-section>
-                                    <m-link :href="histItem.pathWithParams">
-                                        <template v-if="histItem.image">
-                                            <i v-if="histItem.imageType === 'icon'" :class="histItem.image" style="padding-right: 8px;"></i>
-                                            <img v-else :src="histItem.image" :alt="histItem.title" width="18" style="padding-right: 4px;">
-                                        </template>
-                                        <i v-else class="fa fa-link" style="padding-right: 8px;"></i>
-                                        {{histItem.title}}
-                                    </m-link>
-                                </q-item-section></q-item>
-                        </q-list></q-menu>
-                </q-btn>
-                <q-btn dense rounded flat no-caps icon="account_circle" size="12px" label="${(ec.user.userAccount.userFullName)!ec.l10n.localize("Account")}">
-                    <q-tooltip>${(ec.user.userAccount.userFullName)!ec.l10n.localize("Account")}</q-tooltip>
-                    <q-menu><q-card flat bordered><#-- always matching header (dark): class="${headerClass}" -->
-                            <q-card-section horizontal class="q-pa-md">
-                                <q-card-section>
-                                    <#--<#if (ec.user.userAccount.userFullName)?has_content><div class="q-mb-sm text-strong">${ec.l10n.localize("Welcome")} ${ec.user.userAccount.userFullName}</div></#if>-->
-                                    <#-- account plugins -->
-                                    <template v-for="accountPlugin in accountPlugins"><component :is="accountPlugin"></component></template>
-                                </q-card-section>
-                                <q-separator vertical></q-separator>
-                                <q-card-actions vertical class="justify-around q-px-md">
-                                    <div class="row no-wrap">
-                                        <q-btn flat dense to="/apps/my/User/Account" icon="person" size="12px">
-                                            <q-tooltip>${ec.l10n.localize("Account")}</q-tooltip></q-btn>
-                                        <#-- dark/light switch -->
-                                        <q-btn flat dense @click.prevent="switchDarkLight()" icon="invert_colors" size="12px">
-                                            <q-tooltip>${ec.l10n.localize("Switch Dark/Light")}</q-tooltip></q-btn>
-                                        <#-- logout button -->
-                                        <q-btn flat dense icon="logout" size="12px" color="negative" type="a" href="${sri.buildUrl("/Login/logout").url}"
-                                               onclick="return confirm('${ec.l10n.localize("Logout")} ${(ec.user.userAccount.userFullName)!''}?')">
-                                            <q-tooltip>${ec.l10n.localize("Logout")} ${(ec.user.userAccount.userFullName)!''}</q-tooltip></q-btn>
-                                    </div>
-
-                                </q-card-actions>
-                            </q-card-section>
-                        </q-card></q-menu>
-                </q-btn>
             </q-toolbar>
 
             <div class="bg-grey-3 text-black row" id="app-sub-navigation">
