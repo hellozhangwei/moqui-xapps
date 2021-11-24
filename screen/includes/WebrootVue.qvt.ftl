@@ -102,6 +102,7 @@ along with this software (see the LICENSE.md file). If not, see
                         </q-item-section></q-item>
                     </q-list></q-menu>
                 </q-btn>
+                <template v-for="accountPlugin in accountPlugins"><component :is="accountPlugin"></component></template>
                 <template v-if="navMenuList[0]">
                     <q-btn dense round flat icon="apps" :to="navMenuList[0].path"><q-tooltip>Applications</q-tooltip></q-btn>
                 </template>
@@ -110,12 +111,11 @@ along with this software (see the LICENSE.md file). If not, see
                 <q-btn dense stretch flat no-caps icon="account_circle" size="12px" label="${(ec.user.userAccount.userFullName)!ec.l10n.localize("Account")}">
                     <q-tooltip>${(ec.user.userAccount.userFullName)!ec.l10n.localize("Account")}</q-tooltip>
                     <q-menu><q-card flat bordered><#-- always matching header (dark): class="${headerClass}" -->
-                        <q-card-section horizontal class="q-pa-md">
+                        <#--<q-card-section horizontal class="q-pa-md">
                             <q-card-section>
-                            <#-- account plugins -->
                             <template v-for="accountPlugin in accountPlugins"><component :is="accountPlugin"></component></template>
                         </q-card-section>
-                        <q-separator vertical></q-separator>
+                        <q-separator vertical></q-separator>-->
                         <q-card-actions vertical class="justify-around q-px-md">
                             <div class="row no-wrap">
                                 <q-btn flat dense to="/apps/my/User/Account" icon="person" size="12px">
