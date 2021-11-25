@@ -135,9 +135,7 @@ along with this software (see the LICENSE.md file). If not, see
                 </q-btn>
             </q-toolbar>
 
-            <q-toolbar style="height:60px;border-bottom:solid 5px #26a69a;padding-left: 0px;background: linear-gradient(145deg,#1976d2 11%,#0f477e 75%) !important">
-
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <q-toolbar style="height:60px;border-bottom:solid 5px #26a69a;background: linear-gradient(145deg,#1976d2 11%,#0f477e 75%) !important">
                 <template v-if="navMenuList[1]">
                     <template v-for="(subscreen, subscreenIndex) in navMenuList[1].subscreens">
                         <template v-if="(subscreenIndex+1)<=topMenuBreakPoint">
