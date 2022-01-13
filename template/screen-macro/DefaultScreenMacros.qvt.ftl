@@ -1967,7 +1967,7 @@ a => A, d => D, y => Y
     <#assign validationClasses = formInstance.getFieldValidationClasses(.node?parent)>
     <#assign curFieldName><@fieldName .node/></#assign>
     <#assign fieldLabel><@fieldTitle .node?parent/></#assign>
-    <q-input dense outlined<#if fieldLabel?has_content> stack-label label="${fieldLabel}"</#if> type="password" name="${curFieldName}" id="<@fieldId .node/>"<#if formDisabled!> disable</#if><#rt>
+    <q-input dense outlined<#if fieldLabel?has_content> stack-label label="${fieldLabel}"</#if> bg-color="<@getInputBgColor/>" type="password" name="${curFieldName}" id="<@fieldId .node/>"<#if formDisabled!> disable</#if><#rt>
             <#t><#if fieldsJsName?has_content> v-model="${fieldsJsName}.${curFieldName}"</#if>
             <#t> class="form-control<#if validationClasses?has_content> ${validationClasses}</#if>" size="${.node.@size!"25"}"
             <#t><#if .node.@maxlength?has_content> maxlength="${.node.@maxlength}"</#if>
