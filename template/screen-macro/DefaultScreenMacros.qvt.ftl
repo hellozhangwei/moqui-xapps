@@ -921,7 +921,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
                                             <#t>_findDescription:'${Static["org.moqui.util.WebUtilities"].encodeHtmlJsSafe(formListFind.description?html)}',
                                             <#t><#list currentFindUrlParms.keySet() as parmName>'${parmName}':'${Static["org.moqui.util.WebUtilities"].encodeHtmlJsSafe(currentFindUrlParms.get(parmName)!)}',</#list>}">
                                     <div class="row q-gutter-md">
-                                    <div class=""><q-input v-model="formProps.fields._findDescription" dense outlined stack-label label="${descLabel}" size="30" name="_findDescription" id="${saveFindFormId}_description" required="required"></q-input></div>
+                                    <div class=""><q-input v-model="formProps.fields._findDescription" bg-color="<@getInputBgColor/>" dense stack-label label="${descLabel}" size="30" name="_findDescription" id="${saveFindFormId}_description" required="required"></q-input></div>
                                     <div class=""><q-btn dense unelevated color="primary" no-caps type="submit" name="UpdateFind" label="${ec.getL10n().localize("Update")}">
                                             <q-tooltip>Update saved find using description and current find parameters</q-tooltip>
                                         </q-btn></div>
