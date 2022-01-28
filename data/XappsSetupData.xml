@@ -21,7 +21,7 @@
 
     <!--See https://marella.me/material-icons/ how to host material-icon -->
     <moqui.screen.ScreenThemeResource screenThemeId="DEFAULT_XAPPS" sequenceNum="3" resourceTypeEnumId="STRT_STYLESHEET"
-                                      resourceValue="zstatic/material-icons/iconfont/material-icons.css"/>
+                                      resourceValue="xstatic/material-icons/iconfont/material-icons.css"/>
 
     <moqui.screen.ScreenThemeResource screenThemeId="DEFAULT_XAPPS" sequenceNum="4" resourceTypeEnumId="STRT_STYLESHEET"
                                       resourceValue="/libs/quasar/quasar.min.css"/>
