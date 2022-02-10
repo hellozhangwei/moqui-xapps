@@ -173,6 +173,7 @@ ${sri.renderSection(.node["@name"])}
 <#macro "dynamic-dialog">
     <#assign buttonFlat = "">
     <#if .node["@button-flat"]?has_content><#assign buttonFlat = .node["@button-flat"]></#if>
+    <#if .node["@id-with-entry-index"]?has_content><#assign idWithEntryIndex = .node["@id-with-entry-index"]><#else><#assign idWithEntryIndex = 'true'></#if>
     <#assign iconClass = "fa fa-share">
     <#if .node["@icon"]?has_content><#assign iconClass = .node["@icon"]></#if>
     <#if .node["@condition"]?has_content><#assign conditionResult = ec.getResource().condition(.node["@condition"], "")><#else><#assign conditionResult = true></#if>
@@ -181,7 +182,11 @@ ${sri.renderSection(.node["@name"])}
         <#assign title = ec.getResource().expand(.node["@title"], "")>
         <#if !title?has_content><#assign title = buttonText></#if>
         <#assign urlInstance = sri.makeUrlByType(.node["@transition"], "transition", .node, "true")>
-        <#assign ddDivId><@nodeId .node/></#assign>
+        <#if idWithEntryIndex?? && idWithEntryIndex=='true'>
+            <#assign ddDivId><@nodeId .node/></#assign>
+        <#else>
+            <#assign ddDivId><#if .node["@id"]?has_content>${ec.getResource().expandNoL10n(.node["@id"], "")}</#if></#assign>
+        </#if>
         <#if urlInstance.disableLink>
             <q-btn disabled dense outline no-caps icon="open_in_new" label="${buttonText}" color="<@getQuasarColor ec.getResource().expandNoL10n(.node["@type"]!"primary", "")/>" class="${ec.getResource().expandNoL10n(.node["@button-style"]!"", "")}"></q-btn>
         <#else>
