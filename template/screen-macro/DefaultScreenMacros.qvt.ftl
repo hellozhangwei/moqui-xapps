@@ -588,7 +588,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
         </div>
     <#else>
         <div class="form-single-field-group<#if .node["@style"]?has_content> ${.node["@style"]}</#if>">
-            <#if fgTitle?has_content><h5>${fgTitle}</h5></#if>
+            <#if fgTitle?has_content><h5 class="q-ma-sm">${fgTitle}</h5></#if>
             <#recurse .node/>
         </div>
     </#if>
