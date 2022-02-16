@@ -1788,7 +1788,8 @@ Vue.component('m-text-line', {
                 },
                 success: function(defaultText) {
                     vm.loading = false;
-                    if (defaultText && defaultText.length) vm.$emit('input', defaultText);
+                    //if (defaultText && defaultText.length)
+                    vm.$emit('input', defaultText);
                 }
             });
         }
