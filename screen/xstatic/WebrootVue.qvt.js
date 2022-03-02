@@ -1471,7 +1471,7 @@ Vue.component('m-display', {
 Vue.component('m-drop-down', {
     name: "mDropDown",
     props: { value:[Array,String], options:{type:Array,'default':function(){return [];}}, combo:Boolean,
-        allowEmpty:Boolean, multiple:Boolean, requiredManualSelect:Boolean,
+        allowEmpty:Boolean, multiple:Boolean, requiredManualSelect:Boolean, submitOnSelect:Boolean,
         optionsUrl:String, optionsParameters:Object, optionsLoadInit:Boolean,
         serverSearch:Boolean, serverDelay:{type:Number,'default':300}, serverMinLength:{type:Number,'default':1},
         labelField:{type:String,'default':'label'}, valueField:{type:String,'default':'value'},
@@ -1505,6 +1505,10 @@ Vue.component('m-drop-down', {
                 if ($event[this.onSelectGoTo]) this.$root.setUrl($event[this.onSelectGoTo]);
             } else {
                 this.$emit('input', $event);
+            }
+            if (this.submitOnSelect) {
+                var vm = this;
+                vm.$nextTick(function() { vm.$parent.$parent.submitForm(); });
             }
         },
         filterFn: function(search, doneFn, abortFn) {

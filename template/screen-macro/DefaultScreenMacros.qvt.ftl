@@ -627,6 +627,10 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
         <#return>
     </#if>
 </#macro>
+
+<#-- for visible-when do nothing, handled explicitly as child element -->
+<#macro "visible-when"></#macro>
+
 <#macro formSingleWidget fieldSubNode formSingleId colPrefix inFieldRow bigRow>
     <#assign fieldSubParent = fieldSubNode?parent>
     <#if fieldSubNode["ignored"]?has_content><#return></#if>
@@ -634,10 +638,31 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
     <#if fieldSubNode["hidden"]?has_content><#recurse fieldSubNode/><#return></#if>
     <#assign containerStyle = ec.getResource().expandNoL10n(fieldSubNode["@container-style"]!, "")>
     <#assign curFieldTitle><@fieldTitle fieldSubNode/></#assign>
+
+    <#assign visibleWhenNode = (fieldSubNode["visible-when"][0])!>
+    <#assign visibleAttrText = "">
+    <#if visibleWhenNode??>
+        <#assign visibleVal = "">
+        <#if visibleWhenNode["@from"]?has_content>
+            <#assign visibleVal = ec.getResource().expression(visibleWhenNode["@from"], "")!>
+        <#else>
+            <#assign visibleVal = ec.getResource().expand(visibleWhenNode["@value"]!, "")!>
+        </#if>
+        <#if visibleVal?has_content>
+            <#-- NOTE: FreeMarker is sometimes ridiculous, is_string returns true even if the type is ArrayList in one test case, so DO NOT TRUST is_string!!! -->
+            <#if visibleVal?is_string && !visibleVal?is_enumerable && visibleVal?contains(",")><#assign visibleVal = visibleVal?split(",")></#if>
+            <#if visibleVal?is_enumerable>
+                <#assign visibleAttrText> :style="{display:([<#list visibleVal as entryVal>'${entryVal}'<#sep>,</#list>].includes(formProps.fields.${visibleWhenNode["@field"]})?'':'none')}"</#assign>
+            <#else>
+                <#assign visibleAttrText> :style="{display:('${visibleVal}'==formProps.fields.${visibleWhenNode["@field"]}?'':'none')}"</#assign>
+            </#if>
+        </#if>
+    </#if>
+
     <#if bigRow>
-        <div class="q-ma-sm big-row-item">
+        <div class="q-ma-sm q-my-auto big-row-item"${visibleAttrText}>
     <#else>
-        <div class="q-ma-md <#if containerStyle?has_content> ${containerStyle}</#if>">
+        <div class="q-ma-sm<#if containerStyle?has_content> ${containerStyle}</#if>"${visibleAttrText}>
     </#if>
     <#t>${sri.pushContext()}
     <#assign fieldFormId = formSingleId><#-- set this globally so fieldId macro picks up the proper formSingleId, clear after -->
@@ -1928,6 +1953,7 @@ a => A, d => D, y => Y
             <#t><#if fieldsJsName?has_content> v-model="${fieldsJsName}.${name}" :fields="${fieldsJsName}"<#else><#if allowMultiple> :value="[<#list currentValueList as curVal><#if curVal?has_content>'${curVal}',</#if></#list>]"<#else> value="${currentValue!}"</#if></#if>
             <#t><#if allowMultiple> :multiple="true"</#if><#if allowEmpty> :allow-empty="true"</#if><#if .node["@combo-box"]! == "true"> :combo="true"</#if>
             <#t><#if .node["@required-manual-select"]! == "true"> :required-manual-select="true"</#if>
+            <#t><#if .node["@submit-on-select"]! == "true"> :submit-on-select="true"</#if>
             <#t><#if .node?parent["@tooltip"]?has_content> tooltip="${ec.getResource().expand(.node?parent["@tooltip"], "")}"</#if>
             <#t><#if ownerForm?has_content> form="${ownerForm}"</#if><#if .node["@size"]?has_content> size="${.node["@size"]}"</#if>
             <#if isDynamicOptions> options-url="${doUrlInfo.url}" value-field="${doNode["@value-field"]!"value"}" label-field="${doNode["@label-field"]!"label"}"<#if doNode["@depends-optional"]! == "true"> :depends-optional="true"</#if>
