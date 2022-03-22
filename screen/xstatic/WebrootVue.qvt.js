@@ -370,7 +370,7 @@ Vue.component('m-dialog', {
     props: { draggable:{type:Boolean,'default':true}, value:{type:Boolean,'default':false}, id:String, color:String, width:{type:String}, title:{type:String} },
     data: function() { return { isShown:false }; },
     template:
-    '<q-dialog v-bind:value="value" v-on:input="$emit(\'input\', $event)" :id="id" @show="onShow" @hide="onHide" :maximized="$q.platform.is.mobile">' +
+    '<q-dialog v-bind:value="value" v-on:input="$emit(\'input\', $event)" :id="id" @show="onShow" @hide="onHide" :maximized="$q.platform.is.mobile" no-backdrop-dismiss>' +
         '<q-card ref="dialogCard" flat :style="{width:((width||760)+\'px\'),\'max-width\':($q.platform.is.mobile?\'100vw\':\'90vw\')}">' +
             '<q-card-actions ref="dialogHeader" :style="{cursor:(draggable?\'move\':\'default\')}" class="bg-primary text-white">' +
                 '<h5 class="q-pl-sm non-selectable">{{title}}</h5><q-space></q-space>' +
