@@ -810,10 +810,10 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
                     </#assign><div class="q-py-sm <@getFormBgColor/>">
                     <m-form-link name="${headerFormId}" id="${headerFormId}" action="${curUrlInstance.path}" v-slot:default="formProps"<#rt>
                             <#t> :fields-initial="${Static["org.moqui.util.WebUtilities"].fieldValuesEncodeHtmlJsSafe(sri.getFormListHeaderValues(formNode))}">
-                        <div class="q-ma-md">
+                        <div class="q-ma-sm">
                             <q-btn dense size="sm" no-caps color="secondary" unelevated name="clearParameters" @click.prevent="formProps.clearForm" label="${ec.getL10n().localize("Clear Parameters")}"></q-btn>
                         </div>
-                        <div class="q-ma-md">
+                        <div class="q-ma-sm">
                         <#-- Always add an orderByField to select one or more columns to order by -->
                             <q-select dense bg-color="<@getInputBgColor/>" options-dense multiple clearable emit-value map-options v-model="formProps.fields.orderByField"
                                     name="orderByField" id="${headerFormId}_orderByField" stack-label label="${ec.getL10n().localize("Order By")}"
