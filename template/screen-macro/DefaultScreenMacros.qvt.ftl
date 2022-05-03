@@ -101,7 +101,11 @@ ${sri.renderSection(.node["@name"])}
                 <#recurse .node["box-body"][0]>
             </m-box-body>
         </#if>
-        <#if .node["box-body-nopad"]?has_content><#recurse .node["box-body-nopad"][0]></#if>
+        <#if .node["box-body-nopad"]?has_content>
+            <div <#if .node["box-body-nopad"][0]["@style"]?has_content> class="${ec.getResource().expandNoL10n(.node["box-body-nopad"][0]["@style"], "")}"</#if>>
+                <#recurse .node["box-body-nopad"][0]>
+            </div>
+        </#if>
     </m-container-box>
 </#macro>
 <#macro "container-row">
