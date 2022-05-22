@@ -4,7 +4,7 @@
 Vue.prototype.moqui = moqui;
 Vue.prototype.moment = moment;
 Vue.prototype.window = window;
-Vue.prototype.inputBgColor="blue-1";
+Vue.prototype.inputBgColor="white";
 
 moqui.urlExtensions = { js:'qjs', vue:'qvue', vuet:'qvt' }
 
@@ -1486,7 +1486,7 @@ Vue.component('m-drop-down', {
                 ' input-debounce="500" @filter="filterFn" :clearable="allowEmpty||multiple" :disable="disable"' +
                 ' :multiple="multiple" :emit-value="!onSelectGoTo" map-options behavior="menu"' +
                 ' :rules="[val => allowEmpty||multiple||val===\'\'||(val&&val.length)||\'Please select an option\']"' +
-                ' stack-label :label="label" :loading="loading" :options="curOptions">' +
+                ' stack-label :label="label" :loading="loading" :options="curOptions">' + //placeholder="Enter char(s) to search"
             '<q-tooltip v-if="tooltip">{{tooltip}}</q-tooltip>' +
             '<template v-slot:no-option><q-item><q-item-section class="text-grey">No results</q-item-section></q-item></template>' +
             '<template v-if="multiple" v-slot:prepend><div>' +
@@ -1496,6 +1496,16 @@ Vue.component('m-drop-down', {
             '<template v-slot:after>' +
                 '<slot name="after"></slot>' +
             '</template>' +
+            //added by Wei Zhang 20220508
+            '<template v-slot:selected>' +
+                '<template v-if="value">' +
+                  '{{optionLabel(value)}}' +
+               '</template>' +
+               '<template v-else>' +
+                  '<span class="text-grey">Enter {{serverMinLength}} char(s) to search</span>' +
+               '</template>' +
+             '</template>'+
+             //end add
         '</q-select>',
         // TODO: how to add before slot pass through without the small left margin when nothing in the slot? <template v-slot:before><slot name="before"></slot></template>
     methods: {
