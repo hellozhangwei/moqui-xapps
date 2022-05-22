@@ -114,10 +114,11 @@ ${sri.renderSection(.node["@name"])}
     <#-- Quasar: xs:<600 sm:600+ md:1024+ lg:1440+ xl:1920+ ==== Bootstrap3: xs:<768 sm:768+ md:992+ lg:1200+ -->
     <div class="row q-my-sm <#if .node["@style"]?has_content> ${ec.getResource().expandNoL10n(.node["@style"], "")}</#if>"<#if contRowDivId?has_content> id="${contRowDivId}"</#if>>
         <#list .node["row-col"] as rowColNode>
+            <#assign colHasXl = rowColNode["@xl"]?has_content>
             <#assign colHasLg = rowColNode["@lg"]?has_content>
             <#assign colHasMd = rowColNode["@md"]?has_content>
             <#assign colHasSm = rowColNode["@sm"]?has_content>
-            <div class="q-px-xs <#if colHasLg> col-lg-${rowColNode["@lg"]}</#if><#if colHasMd> col-md-${rowColNode["@md"]}<#elseif colHasLg> col-md-12</#if><#if colHasSm> col-sm-${rowColNode["@sm"]}<#elseif colHasLg || colHasMd> col-sm-12</#if><#if rowColNode["@xs"]?has_content> col-xs-${rowColNode["@xs"]}<#elseif colHasLg || colHasMd || colHasSm> col-xs-12</#if><#if rowColNode["@style"]?has_content> ${ec.getResource().expandNoL10n(rowColNode["@style"], "")}</#if>">
+            <div class="q-px-xs <#if colHasXl> col-xl-${rowColNode["@xl"]}</#if><#if colHasLg> col-lg-${rowColNode["@lg"]}</#if><#if colHasMd> col-md-${rowColNode["@md"]}<#elseif colHasLg> col-md-12</#if><#if colHasSm> col-sm-${rowColNode["@sm"]}<#elseif colHasLg || colHasMd> col-sm-12</#if><#if rowColNode["@xs"]?has_content> col-xs-${rowColNode["@xs"]}<#elseif colHasLg || colHasMd || colHasSm> col-xs-12</#if><#if rowColNode["@style"]?has_content> ${ec.getResource().expandNoL10n(rowColNode["@style"], "")}</#if>">
                 <#recurse rowColNode>
             </div>
         </#list>
