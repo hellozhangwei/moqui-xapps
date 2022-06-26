@@ -4,7 +4,7 @@
 Vue.prototype.moqui = moqui;
 Vue.prototype.moment = moment;
 Vue.prototype.window = window;
-Vue.prototype.inputBgColor="white";
+Vue.prototype.inputBgColor="input-1";
 
 moqui.urlExtensions = { js:'qjs', vue:'qvue', vuet:'qvt' }
 

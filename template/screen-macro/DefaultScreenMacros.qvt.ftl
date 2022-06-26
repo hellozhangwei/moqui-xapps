@@ -14,7 +14,7 @@ along with this software (see the LICENSE.md file). If not, see
 <#-- NOTE: no empty lines before the first #macro otherwise FTL outputs empty lines -->
 <#include "DefaultScreenMacros.any.ftl"/>
 <#macro getQuasarColor bootstrapColor><#if bootstrapColor == "success">positive<#elseif bootstrapColor == "danger">negative<#elseif bootstrapColor == "default"><#else>${bootstrapColor}</#if></#macro>
-<#macro getInputBgColor>white</#macro>
+<#macro getInputBgColor>input-1</#macro>
 <#macro getFormBgColor>bg-grey-3</#macro>
 <#macro @element><p>=== Doing nothing for element ${.node?node_name}, not yet implemented. ===</p></#macro>
 
