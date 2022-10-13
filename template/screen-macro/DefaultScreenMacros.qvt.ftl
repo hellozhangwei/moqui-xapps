@@ -1093,9 +1093,9 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
 
             <#if (context[listName + "Count"]!(context[listName].size())!0) == 0>
                 <#if context.getSharedMap().get("_entityListNoSearchParms")!false == true>
-                    <strong class="text-warning on-right q-my-auto">${ec.getL10n().localize("Find Options required to view results")}</strong>
+                    <strong class="text-amber-10 on-right q-my-auto">${ec.getL10n().localize("Find Options required to view results")}</strong>
                 <#else>
-                    <strong class="text-warning on-right q-my-auto">${ec.getL10n().localize("No results found")}</strong>
+                    <strong class="text-amber-10 on-right q-my-auto">${ec.getL10n().localize("No results found")}</strong>
                 </#if>
             </#if>
             </div></div><!--end div in line 736-->
