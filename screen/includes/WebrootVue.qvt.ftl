@@ -103,9 +103,9 @@ along with this software (see the LICENSE.md file). If not, see
                     </q-list></q-menu>
                 </q-btn>
                 <template v-for="accountPlugin in accountPlugins"><component :is="accountPlugin"></component></template>
-                <template v-if="navMenuList[0]">
+                <!--<template v-if="navMenuList[0]">
                     <q-btn dense round flat icon="apps" :to="navMenuList[0].path"><q-tooltip>Applications</q-tooltip></q-btn>
-                </template>
+                </template>-->
                 <q-separator vertical></q-separator>
 
                 <q-btn dense stretch flat no-caps icon="account_circle" size="12px" label="${(ec.user.userAccount.userFullName)!ec.l10n.localize("Account")}">
@@ -136,6 +136,9 @@ along with this software (see the LICENSE.md file). If not, see
             </q-toolbar>
 
             <q-toolbar style="height:60px;border-bottom:solid 5px #26a69a;background: linear-gradient(145deg,#1976d2 11%,#0f477e 75%) !important">
+                <template v-if="navMenuList[0]">
+                    <q-btn flat stretch :to="navMenuList[0].path"><q-icon name="apps" size="md"></q-icon><q-tooltip>Applications</q-tooltip></q-btn>
+                </template>
                 <template v-if="navMenuList[1]">
                     <template v-for="(subscreen, subscreenIndex) in navMenuList[1].subscreens">
                         <template v-if="(subscreenIndex+1)<=topMenuBreakPoint">

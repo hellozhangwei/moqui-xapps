@@ -1,6 +1,6 @@
 <!-- This software is in the public domain under CC0 1.0 Universal plus a Grant of Patent License. -->
 <template>
-    <div>
+    <div class="q-mr-sm">
         <q-btn dense round flat to="/apps/my/User/Notifications" icon="info" :label="notificationCount" size="12px" color="red"><!--  :class="{'text-warning':notificationCount}" -->
             <q-tooltip>Notifications</q-tooltip>
         </q-btn>
