@@ -1513,15 +1513,17 @@ Vue.component('m-drop-down', {
                 '<slot name="after"></slot>' +
             '</template>' +
             //added by Wei Zhang 20220508
-            '<template v-slot:selected>' +
+            /*'<template v-slot:selected>' +
                 '<template v-if="value">' +
                   '{{optionLabel(value)}}' +
                '</template>' +
                '<template v-else>' +
                   '<span class="text-grey">Enter {{serverMinLength}} char(s) to search</span>' +
                '</template>' +
-             '</template>'+
+             '</template>'+*/
              //end add
+             //added by Wei Zhang 20230105
+             '<q-tooltip>Enter {{serverMinLength}} char(s) to search </q-tooltip>' +
         '</q-select>',
         // TODO: how to add before slot pass through without the small left margin when nothing in the slot? <template v-slot:before><slot name="before"></slot></template>
     methods: {
