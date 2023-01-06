@@ -2536,10 +2536,10 @@ moqui.webrootVue = new Vue({
                 console.log("========lt lg============")
             }else if(this.$q.screen.lt.xl) {
                 console.log("========lt xl============")
-                this.topMenuBreakPoint=10
+                this.topMenuBreakPoint=17
             } else {
                 //great than xl
-                this.topMenuBreakPoint=16
+                this.topMenuBreakPoint=26
                 console.log("========great xl============")
             }
         }
