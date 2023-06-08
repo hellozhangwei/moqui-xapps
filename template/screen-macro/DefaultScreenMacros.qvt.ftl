@@ -2004,6 +2004,12 @@ a => A, d => D, y => Y
     </q-file>
 </#macro>
 
+<#macro "image-file">
+    <#assign name><@fieldName .node/></#assign>
+    <#assign tlId><@fieldId .node/></#assign>
+    <m-image-file name="${name}" id="${tlId}"></m-image-file>
+</#macro>
+
 <#macro hidden>
     <#-- if the form is client rendered don't render anything hidden fields; NOTE: could also render and populate with value, but not needed (unless a need comes up...) -->
     <#if fieldsJsName?has_content><#return/></#if>
