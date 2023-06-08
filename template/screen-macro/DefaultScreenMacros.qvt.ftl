@@ -2005,9 +2005,11 @@ a => A, d => D, y => Y
 </#macro>
 
 <#macro "image-file">
+    <#assign curFieldName><@fieldName .node/></#assign>
     <#assign name><@fieldName .node/></#assign>
     <#assign tlId><@fieldId .node/></#assign>
-    <m-image-file name="${name}" id="${tlId}"></m-image-file>
+    <m-image-file name="${name}" id="${tlId}" src="${sri.makeUrlByType(.node["@url"], "transition", .node, "true").getUrlWithParams()}"
+        <#t><#if fieldsJsName?has_content> v-model="${fieldsJsName}.${name}" :fields="${fieldsJsName}"</#if>></m-image-file>
 </#macro>
 
 <#macro hidden>
