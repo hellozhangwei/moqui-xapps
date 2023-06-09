@@ -108,8 +108,8 @@ along with this software (see the LICENSE.md file). If not, see
                     <q-btn dense round flat icon="apps" :to="navMenuList[0].path"><q-tooltip>Applications</q-tooltip></q-btn>
                 </template>-->
                 <q-separator vertical></q-separator>
-
-                <q-btn dense stretch flat no-caps icon="account_circle" size="12px" label="${(ec.user.userAccount.userFullName)!ec.l10n.localize("Account")}">
+                                                  <!--icon="account_circle"-->
+                <q-btn dense stretch flat no-caps icon="img:/apps/my/User/Account/myPhoto" size="12px" label="${(ec.user.userAccount.userFullName)!ec.l10n.localize("Account")}">
                     <q-tooltip>${(ec.user.userAccount.userFullName)!ec.l10n.localize("Account")}</q-tooltip>
                     <q-menu><q-card flat bordered><#-- always matching header (dark): class="${headerClass}" -->
                         <#--<q-card-section horizontal class="q-pa-md">

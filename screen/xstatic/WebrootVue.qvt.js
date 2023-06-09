@@ -669,7 +669,7 @@ Vue.component('m-image-file', {
             };
             reader.readAsDataURL(files[0]);
             this.$emit("input", files[0]);
-
+            //todo shrink image size
             // this assumes the grandparent is m-form
             this.$parent.$parent.submitForm();
           }
