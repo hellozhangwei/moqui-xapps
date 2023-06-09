@@ -142,7 +142,7 @@ along with this software (see the LICENSE.md file). If not, see
                 </q-btn>
             </q-toolbar>
 
-            <q-toolbar style="height:60px;border-bottom:solid 5px #26a69a;background: linear-gradient(145deg,#1976d2 11%,#0f477e 75%) !important">
+            <q-toolbar id="toolbar2" style="height:60px;border-bottom:solid 5px #26a69a;background: linear-gradient(145deg,#1976d2 11%,#0f477e 75%) !important">
                 <template v-if="navMenuList[0]">
                     <q-btn flat stretch :to="navMenuList[0].path"><q-icon name="apps" size="md"></q-icon><q-tooltip>Applications</q-tooltip></q-btn>
                 </template>

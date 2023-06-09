@@ -226,7 +226,7 @@ ul.float-plain.condensed li { margin: 0 4px 0 0; padding: 4px; }
 /*.q-field--outlined .q-field__control {border-radius: 2px;}*/
 
 .q-field--standard.q-field--dense .q-field__control {padding: 0 12px;}
-#.q-header .q-btn__content img{filter: brightness(0) invert(1);}
+#toolbar2 .q-btn__content img{filter: brightness(0) invert(1);}
 #app-sub-navigation a.active :after {content: '';position: absolute;top: 0px;left: calc(40%);width: 0;height: 0;border-right: 6px solid transparent;border-top: 6px solid #18BC9C;border-left: 6px solid transparent;}
 
 .form-order-by a.active {color: red;}
