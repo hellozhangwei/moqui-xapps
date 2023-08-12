@@ -149,7 +149,7 @@ along with this software (see the LICENSE.md file). If not, see
                 <template v-if="navMenuList[1]">
                     <template v-for="(subscreen, subscreenIndex) in navMenuList[1].subscreens">
                         <template v-if="(subscreenIndex+1)<=topMenuBreakPoint">
-                            <q-btn stretch flat stack no-caps size="13px"
+                            <q-btn stretch flat stack no-caps size="13px" class="ellipsis"
                                    :icon="(subscreen.imageType == 'icon')?subscreen.image:'img:' + subscreen.image"
                                    :class="{'bg-secondary':subscreen.active}" :to="subscreen.pathWithParams" :label="subscreen.title">
                             </q-btn>
