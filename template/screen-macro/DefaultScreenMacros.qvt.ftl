@@ -1167,7 +1167,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
 
 <#macro formListSelectedRowCard rowSelectionNode>
 <#-- render action forms, optionally inside dialog -->
-    <q-card flat bordered><q-card-section horizontal class="q-pa-md">
+    <q-card flat bordered><q-card-section horizontal class="q-pa-md q-gutter-x-sm">
         <#list rowSelectionNode["action"]! as actionNode>
             <#assign dialogNodes = actionNode["dialog"]!>
             <#assign formSingleNode = actionNode["form-single"][0]>
@@ -1179,9 +1179,11 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
                 <#assign dialogNode = dialogNodes[0]>
                 <#assign buttonText = ec.getResource().expand(dialogNode["@button-text"], "")>
                 <#assign title = ec.getResource().expand(dialogNode["@title"], "")>
+                <#assign buttonFlat = "">
+                <#if dialogNode["@button-flat"]?has_content><#assign buttonFlat = dialogNode["@button-flat"]></#if>
                 <#if !title?has_content><#assign title = buttonText></#if>
                 <m-container-dialog color="<@getQuasarColor ec.getResource().expandNoL10n(dialogNode["@button-type"]!"primary", "")/>"
-                width="${dialogNode["@width"]!""}" title="${title}" button-text="${buttonText}"
+                width="${dialogNode["@width"]!""}" title="${title}" button-text="${buttonText}" <#if buttonFlat?has_content> :button-flat="${buttonFlat}"</#if>
                 button-class="${ec.getResource().expandNoL10n(dialogNode["@button-style"]!"", "")}">
             </#if>
 
