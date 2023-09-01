@@ -1438,7 +1438,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
             <#assign ownerForm = formId + "_" + listEntry_index>
             <#assign fieldsJsName = "formProps.fields">
             <m-form name="${formId}_${listEntry_index}" id="${formId}_${listEntry_index}" action="${formListUrlInfo.path}" v-slot:default="formProps"
-                    :fields-initial="${Static["org.moqui.util.WebUtilities"].fieldValuesEncodeHtmlJsSafe(sri.makeFormListSingleMap(formListInfo, listEntry, formListUrlInfo))}">
+                    :fields-initial="${Static["org.moqui.util.WebUtilities"].fieldValuesEncodeHtmlJsSafe(sri.makeFormListSingleMap(formListInfo, listEntry, formListUrlInfo, "first"))}">
         </#if>
         <#if isMulti>
             <#assign ownerForm = formId>
