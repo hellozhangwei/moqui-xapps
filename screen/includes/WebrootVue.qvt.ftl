@@ -149,7 +149,7 @@ along with this software (see the LICENSE.md file). If not, see
                 <template v-if="navMenuList[1]">
                     <template v-for="(subscreen, subscreenIndex) in navMenuList[1].subscreens">
                         <template v-if="(subscreenIndex+1)<=topMenuBreakPoint">
-                            <q-btn stretch flat stack no-caps size="13px"
+                            <q-btn stretch flat stack no-caps size="13px" class="ellipsis"
                                    :icon="(subscreen.imageType == 'icon')?subscreen.image:'img:' + subscreen.image"
                                    :class="{'bg-secondary':subscreen.active}" :to="subscreen.pathWithParams" :label="subscreen.title">
                             </q-btn>
@@ -194,9 +194,11 @@ along with this software (see the LICENSE.md file). If not, see
             <div class="bg-grey-3 text-black row" id="app-sub-navigation">
                 <template v-if="navMenuList[2] && !navMenuList[2].hasTabMenu">
                     <template v-for="(subscreen, subscreenIndex) in navMenuList[2].subscreens">
+                        <template v-if="subscreen.menuInclude">
                         <q-btn stretch flat no-caps size="sm" :label="subscreen.title" :to="subscreen.pathWithParams"
                                :class="{'active bg-white':subscreen.active}"
                                :style="[subscreen.active?{}:{'border-bottom':'1px solid #0000001f'}]"></q-btn><q-separator vertical></q-separator>
+                        </template>
                     </template>
                 </template>
             </div>
