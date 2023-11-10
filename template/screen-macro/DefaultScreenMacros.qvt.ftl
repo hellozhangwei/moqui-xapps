@@ -1367,6 +1367,9 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
         <#assign ownerForm = formId + "_first">
         <#assign fieldsJsName = "formProps.fields">
         <tr class="first">
+            <#if isRowSelection>
+                <div class="td"> </div>
+            </#if>
             <#list mainColInfoList as columnFieldList>
                 <td>
                     <#list columnFieldList as fieldNode>
@@ -1397,6 +1400,9 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
         <#assign ownerForm = formId + "_second">
         <#assign fieldsJsName = "formProps.fields">
         <tr class="second">
+            <#if isRowSelection>
+                <div class="td"> </div>
+            </#if>
             <#list mainColInfoList as columnFieldList>
                 <td>
                     <#list columnFieldList as fieldNode>
@@ -1488,6 +1494,9 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
         <#assign ownerForm = formId + "_last">
         <#assign fieldsJsName = "formProps.fields">
         <div class="tr last">
+            <#if isRowSelection>
+                <div class="td"> </div>
+            </#if>
             <#list mainColInfoList as columnFieldList>
                 <div class="td">
                     <#list columnFieldList as fieldNode>
