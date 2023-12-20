@@ -477,9 +477,12 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
 
             <q-list>
             <#list .node?children as childNode>
+              <#if childNode["@condition"]?has_content><#assign childConditionResult = ec.getResource().condition(childNode["@condition"], "")><#else><#assign childConditionResult = true></#if>
+              <#if childConditionResult>
                 <q-item><q-item-section>
                     <#visit childNode>
                 </q-item-section></q-item>
+              </#if>
             </#list>
             </q-list>
         </q-btn-dropdown>
