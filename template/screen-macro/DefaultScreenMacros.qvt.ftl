@@ -1997,7 +1997,7 @@ a => A, d => D, y => Y
             <#-- support <#if .node["@current"]! == "first-in-list"> again? -->
             <#if ec.getResource().expandNoL10n(.node["@show-not"]!, "") == "true">
             <template v-slot:after>
-                <q-field dense :bg-color="formProps.fieldChanged('${name}_not')?'<@fieldChangedBgColor/>':''">
+                <q-field dense :bg-color="formProps.fieldChanged('${name}_not')?'<@fieldChangedBgColor/>':'<@fieldDefaultBgColor/>'">
                     <#t><q-checkbox size="xs" name="${name}_not" label="${ec.getL10n().localize("Not")}"<#if ownerForm?has_content> form="${ownerForm}"</#if><#rt>
                     <#t><#if fieldsJsName?has_content> true-value="Y" false-value="N" v-model="${fieldsJsName}.${name}_not"<#else> value="Y"<#if ec.getWeb().parameters.get(name + "_not")! == "Y"> checked="checked"</#if></#if>></q-checkbox></q-field>
             </template>
