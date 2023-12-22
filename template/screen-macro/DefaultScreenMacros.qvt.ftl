@@ -2096,11 +2096,14 @@ a => A, d => D, y => Y
     <#assign iconClass = .node["@icon"]!>
     <#if !iconClass?has_content><#assign iconClass = sri.getThemeIconClass(buttonText)!></#if>
     <#--q-btn size="${.node.@size!"sm"}" unelevated no-caps type="submit" name="<@fieldName .node/>" value="<@fieldName .node/>" id="<@fieldId .node/>" <#if buttonFlat?has_content> flat</#if><#rt-->
-    <q-btn dense :outline="!formProps.hasFieldsChanged" unelevated no-caps type="submit" name="<@fieldName .node/>" value="<@fieldName .node/>" id="<@fieldId .node/>"<#rt>
+    <#--:outline="!formProps.hasFieldsChanged"-->
+    <q-btn size="${.node.@size!"sm"}" unelevated no-caps type="submit" name="<@fieldName .node/>" value="<@fieldName .node/>" id="<@fieldId .node/>"<#rt>
             <#t> color="<@getQuasarColor .node["@type"]!"primary"/>"<#if formDisabled!> disabled</#if>
             <#t><#if confirmationMessage?has_content> onclick="return confirm('${confirmationMessage?js_string}');"</#if>
-            <#t><#if ownerForm?has_content> form="${ownerForm}"</#if><#if !.node["image"]?has_content> label="${buttonText}"</#if>>
-        <#if iconClass?has_content><i class="${iconClass} q-icon"></i></#if>
+            <#t><#if ownerForm?has_content> form="${ownerForm}"</#if>>
+        <#if iconClass?has_content><q-icon left name="${iconClass}"/></#if>
+        <template v-if="formProps.hasFieldsChanged"><q-icon left name="save"/></template>
+        <#if !.node["image"]?has_content> <div>${buttonText}</div></#if>
         <#if .node?parent["@tooltip"]?has_content><q-tooltip><span v-pre>${ec.getResource().expand(.node?parent["@tooltip"], "")}</span></q-tooltip></#if>
     <#if .node["image"]?has_content><#assign imageNode = .node["image"][0]>
         <img src="${sri.makeUrlByType(imageNode["@url"],imageNode["@url-type"]!"content",null,"true")}" alt="<#if imageNode["@alt"]?has_content>${imageNode["@alt"]}<#else><@fieldTitle .node?parent/></#if>"<#if imageNode["@width"]?has_content> width="${imageNode["@width"]}"</#if><#if imageNode["@height"]?has_content> height="${imageNode["@height"]}"</#if>>
