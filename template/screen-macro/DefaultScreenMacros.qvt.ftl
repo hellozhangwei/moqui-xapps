@@ -14,7 +14,8 @@ along with this software (see the LICENSE.md file). If not, see
 <#-- NOTE: no empty lines before the first #macro otherwise FTL outputs empty lines -->
 <#include "DefaultScreenMacros.any.ftl"/>
 <#macro getQuasarColor bootstrapColor><#if bootstrapColor == "success">positive<#elseif bootstrapColor == "danger">negative<#elseif bootstrapColor == "default"><#else>${bootstrapColor}</#if></#macro>
-<#macro getInputBgColor>input-1</#macro>
+<#macro fieldDefaultBgColor>input-1</#macro>
+<#macro fieldChangedBgColor>lime-1</#macro>
 <#macro getFormBgColor>bg-grey-3</#macro>
 <#macro @element><p>=== Doing nothing for element ${.node?node_name}, not yet implemented. ===</p></#macro>
 
@@ -832,7 +833,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
                         </div>
                         <div class="q-ma-sm">
                         <#-- Always add an orderByField to select one or more columns to order by -->
-                            <q-select dense bg-color="<@getInputBgColor/>" options-dense multiple clearable emit-value map-options v-model="formProps.fields.orderByField"
+                            <q-select dense bg-color="<@fieldDefaultBgColor/>" options-dense multiple clearable emit-value map-options v-model="formProps.fields.orderByField"
                                     name="orderByField" id="${headerFormId}_orderByField" stack-label label="${ec.getL10n().localize("Order By")}"
                                     :options="[${orderByOptions}]"></q-select>
                         </div>
@@ -943,7 +944,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
                                 :fields-initial="{formLocation:'${formListInfo.getSavedFindFullLocation()}',_findDescription:'',<#rt>
                         <#t><#list currentFindUrlParms.keySet() as parmName>'${parmName}':'${Static["org.moqui.util.WebUtilities"].encodeHtmlJsSafe(currentFindUrlParms.get(parmName)!)}',</#list>}">
                             <div class="big-row">
-                                <div class="q-my-auto big-row-item"><q-input bg-color="<@getInputBgColor/>" v-model="formProps.fields._findDescription" dense stack-label label="${descLabel}" size="30" name="_findDescription" id="${formId}_NewFind_description" required="required"></q-input></div>
+                                <div class="q-my-auto big-row-item"><q-input bg-color="<@fieldDefaultBgColor/>" v-model="formProps.fields._findDescription" dense stack-label label="${descLabel}" size="30" name="_findDescription" id="${formId}_NewFind_description" required="required"></q-input></div>
                                 <div class="on-right q-my-auto big-row-item"><q-btn dense unelevated color="primary" no-caps type="submit" label="${ec.getL10n().localize("Save New Find")}"></q-btn></div>
                             </div>
                         </m-form>
@@ -968,7 +969,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
                                             <#t>_findDescription:'${Static["org.moqui.util.WebUtilities"].encodeHtmlJsSafe(formListFind.description?html)}',
                                             <#t><#list currentFindUrlParms.keySet() as parmName>'${parmName}':'${Static["org.moqui.util.WebUtilities"].encodeHtmlJsSafe(currentFindUrlParms.get(parmName)!)}',</#list>}">
                                     <div class="row q-gutter-md">
-                                    <div class=""><q-input v-model="formProps.fields._findDescription" bg-color="<@getInputBgColor/>" dense stack-label label="${descLabel}" size="30" name="_findDescription" id="${saveFindFormId}_description" required="required"></q-input></div>
+                                    <div class=""><q-input v-model="formProps.fields._findDescription" bg-color="<@fieldDefaultBgColor/>" dense stack-label label="${descLabel}" size="30" name="_findDescription" id="${saveFindFormId}_description" required="required"></q-input></div>
                                     <div class=""><q-btn dense unelevated color="primary" no-caps type="submit" name="UpdateFind" label="${ec.getL10n().localize("Update")}">
                                             <q-tooltip>Update saved find using description and current find parameters</q-tooltip>
                                         </q-btn></div>
@@ -989,7 +990,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
                                 <m-form id="${saveFindFormId}" action="${formSaveFindUrl}" :no-validate="true"
                                         :fields-initial="{formListFindId:'${formListFind.formListFindId}', formLocation:'${Static["org.moqui.util.WebUtilities"].encodeHtmlJsSafe(formListInfo.getSavedFindFullLocation())}'}">
                                     <div class="row q-gutter-md">
-                                    <div class=""><q-input dense bg-color="<@getInputBgColor/>" value="${formListFind.description?html}"></q-input></div>
+                                    <div class=""><q-input dense bg-color="<@fieldDefaultBgColor/>" value="${formListFind.description?html}"></q-input></div>
                                     <div class=""><q-btn dense unelevated color="primary" no-caps to="${doFindUrl.pathWithParams}" label="${ec.getL10n().localize("Do Find")}"></q-btn></div>
                                     <#if userFindInfo.isByUserId == "true">
                                         <div class=""><q-btn dense unelevated color="negative" no-caps type="submit" name="DeleteFind" label="${ec.getL10n().localize("Delete")}"
@@ -1729,7 +1730,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
     <#if useWrapper>
     <q-field dense borderless<#if fieldLabel?has_content> stack-label label="${fieldLabel}"</#if>
         <#t><#if containerStyle?has_content> class="${containerStyle}"</#if><#if formDisabled!false> disable</#if>
-        <#t> :bg-color="formProps.fieldChanged('${curName}')?'blue-1':'<@getInputBgColor/>'">
+        <#t> :bg-color="formProps.fieldChanged('${curName}')?'<@fieldChangedBgColor/>':'<@fieldDefaultBgColor/>'">
         <#if .node?parent["@tooltip"]?has_content><q-tooltip><span v-pre>${ec.getResource().expand(.node?parent["@tooltip"], "")}</span></q-tooltip></#if>
         <template v-slot:control>
     </#if>
@@ -1756,7 +1757,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
       <m-date-time id="<@fieldId .node/>_from" name="${curFieldName}_from" type="${.node["@type"]!""}" size="${.node["@size"]!""}"<#rt>
           <#t> label="${curFieldTitle} ${ec.getL10n().localize("From")}"
           <#t><#if fieldsJsName?has_content> v-model="${fieldsJsName}.${curFieldName}_from"<#else> value="${fieldValueFrom?html}"</#if>
-          <#t> :bg-color="formProps.fieldChanged('${curFieldName}_from')?'blue-1':'<@getInputBgColor/>'"
+          <#t> :bg-color="formProps.fieldChanged('${curFieldName}_from')?'<@fieldChangedBgColor/>':'<@fieldDefaultBgColor/>'"
           <#t><#if .node?parent["@tooltip"]?has_content> tooltip="${ec.getResource().expand(.node?parent["@tooltip"], "")}"</#if>
           <#t><#if ownerForm?has_content> form="${ownerForm}"</#if><#if javaFormat?has_content> format="<@getMomentDateFormat javaFormat/>"</#if>></m-date-time>
     </span>
@@ -1764,7 +1765,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
       <m-date-time id="<@fieldId .node/>_thru" name="${curFieldName}_thru" type="${.node["@type"]!""}" size="${.node["@size"]!""}"<#rt>
           <#t> label="${curFieldTitle} ${ec.getL10n().localize("Thru")}"
           <#t><#if fieldsJsName?has_content> v-model="${fieldsJsName}.${curFieldName}_thru"<#else> value="${fieldValueThru?html}"</#if>
-          <#t> :bg-color="formProps.fieldChanged('${curFieldName}_thru')?'blue-1':'<@getInputBgColor/>'"
+          <#t> :bg-color="formProps.fieldChanged('${curFieldName}_thru')?'<@fieldChangedBgColor/>':'<@fieldDefaultBgColor/>'"
           <#t><#if .node?parent["@tooltip"]?has_content> tooltip="${ec.getResource().expand(.node?parent["@tooltip"], "")}"</#if>
           <#t><#if ownerForm?has_content> form="${ownerForm}"</#if><#if javaFormat?has_content> format="<@getMomentDateFormat javaFormat/>"</#if>></m-date-time>
     </span>
@@ -1833,7 +1834,7 @@ a => A, d => D, y => Y
     <#assign validationRules = formInstance.getFieldValidationJsRules(dtSubFieldNode)!>
     <m-date-time id="<@fieldId .node/>" name="${curName}" type="${.node["@type"]!""}" size="${.node["@size"]!""}" label="<@fieldTitle dtSubFieldNode/>"<#if formDisabled!> disable</#if><#rt>
         <#t><#if fieldsJsName?has_content> v-model="${fieldsJsName}.${curName}"<#else> value="${sri.getFieldValueString(dtFieldNode, .node["@default-value"]!"", javaFormat)?html}"</#if>
-        <#t> :bg-color="formProps.fieldChanged('${curName}')?'blue-1':'<@getInputBgColor/>'"
+        <#t> :bg-color="formProps.fieldChanged('${curName}')?'<@fieldChangedBgColor/>':'<@fieldDefaultBgColor/>'"
         <#t><#if .node?parent["@tooltip"]?has_content> tooltip="${ec.getResource().expand(.node?parent["@tooltip"], "")}"</#if>
         <#t><#if ownerForm?has_content> form="${ownerForm}"</#if><#if javaFormat?has_content> format="<@getMomentDateFormat javaFormat/>"</#if>
         <#t><#if validationClasses?contains("required")> required="required"</#if>
@@ -1980,7 +1981,7 @@ a => A, d => D, y => Y
             <#t><#if allowMultiple> :multiple="true"</#if><#if allowEmpty> :allow-empty="true"</#if><#if .node["@combo-box"]! == "true"> :combo="true"</#if>
             <#t><#if .node["@required-manual-select"]! == "true"> :required-manual-select="true"</#if>
             <#t><#if .node["@submit-on-select"]! == "true"> :submit-on-select="true"</#if>
-            <#t> :bg-color="formProps.fieldChanged('${name}')?'blue-1':'<@getInputBgColor/>'"
+            <#t> :bg-color="formProps.fieldChanged('${name}')?'<@fieldChangedBgColor/>':'<@fieldDefaultBgColor/>'"
             <#t><#if .node?parent["@tooltip"]?has_content> tooltip="${ec.getResource().expand(.node?parent["@tooltip"], "")}"</#if>
             <#t><#if ownerForm?has_content> form="${ownerForm}"</#if><#if .node["@size"]?has_content> size="${.node["@size"]}"</#if>
             <#if isDynamicOptions> options-url="${doUrlInfo.url}" value-field="${doNode["@value-field"]!"value"}" label-field="${doNode["@label-field"]!"label"}"<#if doNode["@depends-optional"]! == "true"> :depends-optional="true"</#if>
@@ -1996,7 +1997,7 @@ a => A, d => D, y => Y
             <#-- support <#if .node["@current"]! == "first-in-list"> again? -->
             <#if ec.getResource().expandNoL10n(.node["@show-not"]!, "") == "true">
             <template v-slot:after>
-                <q-field dense :bg-color="formProps.fieldChanged('${name}_not')?'blue-1':''">
+                <q-field dense :bg-color="formProps.fieldChanged('${name}_not')?'<@fieldChangedBgColor/>':''">
                     <#t><q-checkbox size="xs" name="${name}_not" label="${ec.getL10n().localize("Not")}"<#if ownerForm?has_content> form="${ownerForm}"</#if><#rt>
                     <#t><#if fieldsJsName?has_content> true-value="Y" false-value="N" v-model="${fieldsJsName}.${name}_not"<#else> value="Y"<#if ec.getWeb().parameters.get(name + "_not")! == "Y"> checked="checked"</#if></#if>></q-checkbox></q-field>
             </template>
@@ -2007,8 +2008,8 @@ a => A, d => D, y => Y
 <#macro file>
     <#assign curFieldName><@fieldName .node/></#assign>
     <#assign fieldLabel><@fieldTitle .node?parent/></#assign>
-     <q-file dense bg-color="<@getInputBgColor/>" <#if fieldLabel?has_content> stack-label label="${fieldLabel}"</#if><#if fieldsJsName?has_content> v-model="${fieldsJsName}.${curFieldName}"</#if><#if formDisabled!> disable</#if>
-            <#-- TODO-FC <#t> :bg-color="formProps.fieldChanged('${name}')?'blue-1':''" -->
+     <q-file dense bg-color="<@fieldDefaultBgColor/>" <#if fieldLabel?has_content> stack-label label="${fieldLabel}"</#if><#if fieldsJsName?has_content> v-model="${fieldsJsName}.${curFieldName}"</#if><#if formDisabled!> disable</#if>
+            <#-- TODO-FC <#t> :bg-color="formProps.fieldChanged('${name}')?'<@fieldChangedBgColor/>':''" -->
             <#t> name="<@fieldName .node/>" size="${.node.@size!"30"}"<#if .node.@multiple! == "true"> multiple</#if><#if .node.@accept?has_content> accept="${acceptText}"</#if><#if .node.@maxlength?has_content> maxlength="${.node.@maxlength}"</#if><#if ownerForm?has_content> form="${ownerForm}"</#if>>
         <#if .node?parent["@tooltip"]?has_content><q-tooltip><span v-pre>${ec.getResource().expand(.node?parent["@tooltip"], "")}</span></q-tooltip></#if>
     </q-file>
@@ -2036,7 +2037,7 @@ a => A, d => D, y => Y
     <#assign validationClasses = formInstance.getFieldValidationClasses(.node?parent)>
     <#assign curFieldName><@fieldName .node/></#assign>
     <#assign fieldLabel><@fieldTitle .node?parent/></#assign>
-    <q-input dense outlined<#if fieldLabel?has_content> stack-label label="${fieldLabel}"</#if> bg-color="<@getInputBgColor/>" type="password" name="${curFieldName}" id="<@fieldId .node/>"<#if formDisabled!> disable</#if><#rt>
+    <q-input dense outlined<#if fieldLabel?has_content> stack-label label="${fieldLabel}"</#if> bg-color="<@fieldDefaultBgColor/>" type="password" name="${curFieldName}" id="<@fieldId .node/>"<#if formDisabled!> disable</#if><#rt>
             <#t><#if fieldsJsName?has_content> v-model="${fieldsJsName}.${curFieldName}"</#if>
             <#t> class="form-control<#if validationClasses?has_content> ${validationClasses}</#if>" size="${.node.@size!"25"}"
             <#t><#if .node.@maxlength?has_content> maxlength="${.node.@maxlength}"</#if>
@@ -2053,7 +2054,7 @@ a => A, d => D, y => Y
     <#assign curName><@fieldName .node/></#assign>
     <#assign fieldLabel><@fieldTitle .node?parent/></#assign>
     <q-field dense borderless<#if fieldLabel?has_content> stack-label label="${fieldLabel}"</#if><#if formDisabled!> disable</#if>
-        <#t> :bg-color="formProps.fieldChanged('${curName}')?'blue-1':'<@getInputBgColor/>'">
+        <#t> :bg-color="formProps.fieldChanged('${curName}')?'<@fieldChangedBgColor/>':'<@fieldDefaultBgColor/>'">
         <#if .node?parent["@tooltip"]?has_content><q-tooltip><span v-pre>${ec.getResource().expand(.node?parent["@tooltip"], "")}</span></q-tooltip></#if>
         <template v-slot:control>
         <#list (options.keySet())! as key>
@@ -2070,15 +2071,15 @@ a => A, d => D, y => Y
     <#assign fieldLabel><@fieldTitle .node?parent/></#assign>
     <#assign curTooltip = ec.getResource().expand(.node?parent["@tooltip"]!, "")>
 <div class="row">
-    <q-input dense bg-color="<@getInputBgColor/>" stack-label label="${fieldLabel} From" name="${curFieldName}_from" id="${tlId}_from"<#if ownerForm?has_content> form="${ownerForm}"</#if><#rt>
+    <q-input dense bg-color="<@fieldDefaultBgColor/>" stack-label label="${fieldLabel} From" name="${curFieldName}_from" id="${tlId}_from"<#if ownerForm?has_content> form="${ownerForm}"</#if><#rt>
             <#t> size="${.node.@size!"10"}"<#if .node.@maxlength?has_content> maxlength="${.node.@maxlength}"</#if>
-            <#t> :bg-color="formProps.fieldChanged('${curFieldName}_from')?'blue-1':'<@getInputBgColor/>'"
+            <#t> :bg-color="formProps.fieldChanged('${curFieldName}_from')?'<@fieldChangedBgColor/>':'<@fieldDefaultBgColor/>'"
             <#t><#if fieldsJsName?has_content> v-model="${fieldsJsName}.${curFieldName}_from"<#else> value="${ec.getContext().get(curFieldName + "_from")!?default(.node["@default-value-from"]!"")?html}"</#if>>
         <#if curTooltip?has_content><q-tooltip><span v-pre>${curTooltip}</span></q-tooltip></#if>
     </q-input>
-    <q-input class="q-pl-xs" dense bg-color="<@getInputBgColor/>" stack-label label="${fieldLabel} Thru" name="${curFieldName}_thru" id="${tlId}_thru"<#if ownerForm?has_content> form="${ownerForm}"</#if><#rt>
+    <q-input class="q-pl-xs" dense bg-color="<@fieldDefaultBgColor/>" stack-label label="${fieldLabel} Thru" name="${curFieldName}_thru" id="${tlId}_thru"<#if ownerForm?has_content> form="${ownerForm}"</#if><#rt>
             <#t> size="${.node.@size!"10"}"<#if .node.@maxlength?has_content> maxlength="${.node.@maxlength}"</#if>
-            <#t> :bg-color="formProps.fieldChanged('${curFieldName}_from')?'blue-1':'<@getInputBgColor/>'"
+            <#t> :bg-color="formProps.fieldChanged('${curFieldName}_from')?'<@fieldChangedBgColor/>':'<@fieldDefaultBgColor/>'"
             <#t><#if fieldsJsName?has_content> v-model="${fieldsJsName}.${curFieldName}_thru"<#else> value="${ec.getContext().get(curFieldName + "_thru")!?default(.node["@default-value-thru"]!"")?html}"</#if>>
         <#if curTooltip?has_content><q-tooltip<span v-pre>>${curTooltip}</span></q-tooltip></#if>
     </q-input>
@@ -2125,13 +2126,13 @@ a => A, d => D, y => Y
         <m-simple-mde<#if fieldsJsName?has_content> v-model="${fieldsJsName}.${name}"</#if>
                 :config="{ indentWithTabs:false, autoDownloadFontAwesome:false, autofocus:true, spellChecker:false }"></m-simple-mde>
     <#else>
-        <q-input type="textarea" dense bg-color="<@getInputBgColor/>" <#if fieldLabel?has_content> stack-label label="${fieldLabel}"</#if> name="${name}" for="<@fieldId .node/>"
+        <q-input type="textarea" dense bg-color="<@fieldDefaultBgColor/>" <#if fieldLabel?has_content> stack-label label="${fieldLabel}"</#if> name="${name}" for="<@fieldId .node/>"
                 <#t><#if fieldsJsName?has_content> v-model="${fieldsJsName}.${name}"</#if><#if formDisabled!> disable</#if>
                 <#t><#if .node["@cols"]?has_content> cols="${.node["@cols"]}"<#else> style="width:100%;"</#if>
                 <#t> rows="${.node["@rows"]!"3"}"<#if .node["@read-only"]! == "true"> readonly="readonly"</#if>
                 <#t><#if .node["@autogrow"]! == "true"> autogrow</#if>
                 <#-- TODO add config, etc: <#t> @blur="formProps.blurSubmitForm($event)" -->
-                <#t> :bg-color="formProps.fieldChanged('${name}')?'blue-1':'<@getInputBgColor/>'"
+                <#t> :bg-color="formProps.fieldChanged('${name}')?'<@fieldChangedBgColor/>':'<@fieldDefaultBgColor/>'"
                 <#t><#if .node["@maxlength"]?has_content> maxlength="${.node["@maxlength"]}"</#if><#if ownerForm?has_content> form="${ownerForm}"</#if>>
             <#if .node?parent["@tooltip"]?has_content><q-tooltip><span v-pre>${ec.getResource().expand(.node?parent["@tooltip"], "")}</span></q-tooltip></#if>
             <#if !fieldsJsName?has_content>${sri.getFieldValueString(.node)?html}</#if>
@@ -2190,7 +2191,7 @@ a => A, d => D, y => Y
                 <#t> <#if fieldsJsName?has_content>v-model="${fieldsJsName}.${name}" :fields="${fieldsJsName}"<#else><#if fieldValue?html == fieldValue>value="${fieldValue}"<#else>:value="'${Static["org.moqui.util.WebUtilities"].encodeHtmlJsSafe(fieldValue)}'"</#if></#if>
                 <#t><#if .node.@size?has_content> size="${.node.@size}"<#else> style="width:100%;"</#if><#if .node.@maxlength?has_content> maxlength="${.node.@maxlength}"</#if>
                 <#t><#if formDisabled! || ec.getResource().condition(.node.@disabled!"false", "")> disable</#if>
-                <#t> :bg-color="formProps.fieldChanged('${name}')?'blue-1':'<@getInputBgColor/>'"
+                <#t> :bg-color="formProps.fieldChanged('${name}')?'<@fieldChangedBgColor/>':'<@fieldDefaultBgColor/>'"
                 <#t> class="<#if validationClasses?has_content>${validationClasses}</#if><#if tlAlign == "center"> text-center<#elseif tlAlign == "right"> text-right</#if>"
                 <#t><#if validationClasses?contains("required")> required</#if><#if regexpInfo?has_content> pattern="${regexpInfo.regexp}" data-msg-pattern="${regexpInfo.message!"Invalid format"}"</#if>
                 <#t><#if expandedMask?has_content> mask="${expandedMask}" fill-mask="_"<#if validationClasses?contains("number")> :reverse-fill-mask="true"</#if></#if>
@@ -2211,9 +2212,9 @@ a => A, d => D, y => Y
     <#assign curFieldName><@fieldName .node/></#assign>
     <#assign fieldLabel><@fieldTitle .node?parent/></#assign>
     <#assign hideOptions = .node["@hide-options"]!"false">
-    <q-input dense bg-color="<@getInputBgColor/>" <#if fieldLabel?has_content> stack-label label="${fieldLabel}"</#if> name="${curFieldName}"<#rt>
+    <q-input dense bg-color="<@fieldDefaultBgColor/>" <#if fieldLabel?has_content> stack-label label="${fieldLabel}"</#if> name="${curFieldName}"<#rt>
             <#t> size="${.node.@size!"30"}"<#if .node.@maxlength?has_content> maxlength="${.node.@maxlength}"</#if> id="<@fieldId .node/>"
-            <#t> :bg-color="formProps.fieldChanged('${curFieldName}')?'blue-1':'<@getInputBgColor/>'"
+            <#t> :bg-color="formProps.fieldChanged('${curFieldName}')?'<@fieldChangedBgColor/>':'<@fieldDefaultBgColor/>'"
             <#t><#if ownerForm?has_content> form="${ownerForm}"</#if>
             <#t><#if fieldsJsName?has_content> v-model="${fieldsJsName}.${curFieldName}"<#else> value="${sri.getFieldValueString(.node)?html}"</#if>>
         <#if .node["@tooltip"]?has_content><q-tooltip><span v-pre>${ec.getResource().expand(.node["@tooltip"], "")}</span></q-tooltip></#if>
@@ -2221,22 +2222,22 @@ a => A, d => D, y => Y
         <template v-slot:after>
             <#if hideOptions != "operator">
                 <#assign defaultOperator = .node["@default-operator"]!"contains">
-                <q-field dense :bg-color="formProps.fieldChanged('${curFieldName}_not')?'blue-1':'<@getInputBgColor/>'">
+                <q-field dense :bg-color="formProps.fieldChanged('${curFieldName}_not')?'<@fieldChangedBgColor/>':'<@fieldDefaultBgColor/>'">
                 <q-checkbox class="on-left" size="xs" name="${curFieldName}_not" label="${ec.getL10n().localize("Not")}"<#if ownerForm?has_content> form="${ownerForm}"</#if><#rt>
                     <#t><#if fieldsJsName?has_content> true-value="Y" false-value="N" v-model="${fieldsJsName}.${curFieldName}_not"<#else>
                     <#t> value="Y"<#if ec.getWeb().parameters.get(curFieldName + "_not")! == "Y"> checked="checked"</#if></#if>></q-checkbox>
                 </q-field>
-                <!--bg-color="<@getInputBgColor/>"-->
+                <!--bg-color="<@fieldDefaultBgColor/>"-->
                 <q-select class="on-left" dense  options-dense emit-value map-options name="${curFieldName}_op"<#if ownerForm?has_content> form="${ownerForm}"</#if><#rt>
-                    <#t> :bg-color="formProps.fieldChanged('${curFieldName}_op')?'blue-1':'<@getInputBgColor/>'"
+                    <#t> :bg-color="formProps.fieldChanged('${curFieldName}_op')?'<@fieldChangedBgColor/>':'<@fieldDefaultBgColor/>'"
                     <#t><#if fieldsJsName?has_content> v-model="${fieldsJsName}.${curFieldName}_op"<#else> value="${ec.web.parameters.get(curFieldName + "_op")!defaultOperator!""}"</#if>
                     <#t> :options="[{value:'equals',label:'${ec.getL10n().localize("Equals")}'},{value:'like',label:'${ec.getL10n().localize("Like")}'},{value:'contains',label:'${ec.getL10n().localize("Contains")}'},{value:'begins',label:'${ec.getL10n().localize("Begins With")}'},{value:'empty',label:'${ec.getL10n().localize("Empty")}'}]"></q-select>
             </#if>
             <#if hideOptions != "ignore-case">
                 <#assign ignoreCase = (ec.getWeb().parameters.get(curFieldName + "_ic")! == "Y") || !(.node["@ignore-case"]?has_content) || (.node["@ignore-case"] == "true")>
-                <q-field dense :bg-color="formProps.fieldChanged('${curFieldName}_ic')?'blue-1':'<@getInputBgColor/>'">
+                <q-field dense :bg-color="formProps.fieldChanged('${curFieldName}_ic')?'<@fieldChangedBgColor/>':'<@fieldDefaultBgColor/>'">
                 <q-checkbox size="xs" name="${curFieldName}_ic" label="${ec.getL10n().localize("Ignore Case")}"<#if ownerForm?has_content> form="${ownerForm}"</#if><#rt>
-                    <#t> :label-color="formProps.fieldChanged('${curFieldName}_ic')?'blue-1':'<@getInputBgColor/>'"
+                    <#t> :label-color="formProps.fieldChanged('${curFieldName}_ic')?'<@fieldChangedBgColor/>':'<@fieldDefaultBgColor/>'"
                     <#t><#if fieldsJsName?has_content> true-value="Y" false-value="N" v-model="${fieldsJsName}.${curFieldName}_ic"<#else> value="Y"<#if ignoreCase> checked="checked"</#if></#if>></q-checkbox>
                 </q-field>
             </#if>
