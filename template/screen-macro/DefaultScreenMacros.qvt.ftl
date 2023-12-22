@@ -2102,7 +2102,7 @@ a => A, d => D, y => Y
             <#t><#if confirmationMessage?has_content> onclick="return confirm('${confirmationMessage?js_string}');"</#if>
             <#t><#if ownerForm?has_content> form="${ownerForm}"</#if>>
         <#if iconClass?has_content><q-icon left name="${iconClass}"/></#if>
-        <template v-if="formProps.hasFieldsChanged"><q-icon left name="save"/></template>
+        <template v-if="formProps.hasFieldsChanged"><q-icon left name="o_info"/></template>
         <#if !.node["image"]?has_content> <div>${buttonText}</div></#if>
         <#if .node?parent["@tooltip"]?has_content><q-tooltip><span v-pre>${ec.getResource().expand(.node?parent["@tooltip"], "")}</span></q-tooltip></#if>
     <#if .node["image"]?has_content><#assign imageNode = .node["image"][0]>
