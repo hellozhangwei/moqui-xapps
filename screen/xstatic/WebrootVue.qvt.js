@@ -363,7 +363,7 @@ Vue.component('m-container-box', {
             '<span v-if="title && title.length" @click="toggleBody" :class="\'text-\' + type">{{title}}</span>' +
             '<slot name="header"></slot>' +
             '<q-space></q-space>' +
-            '<div class="q-gutter-x-xs"><slot name="toolbar"></slot></div>' +
+            '<div class="q-gutter-x-xs row items-center"><slot name="toolbar"></slot></div>' +
             '  <q-btn color="grey"  round flat dense :icon="isBodyOpen ? \'keyboard_arrow_up\' : \'keyboard_arrow_down\'" @click="toggleBody" />' +
         '</q-card-actions>' +
         '  <div v-show="isBodyOpen">' +
