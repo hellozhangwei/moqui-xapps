@@ -9,5 +9,10 @@
             <subscreens-item name="xapps" menu-include="false" location="component://moqui-xapps/screen/xapps.xml"/>
             <subscreens-item name="xstatic" menu-include="false" location="component://moqui-xapps/screen/xstatic.xml"/>
         </screen>
+
+        <screen location="component://webroot/screen/webroot/apps.xml">
+            <subscreens-item name="AppList" menu-title="App List" menu-include="false"
+                             location="component://moqui-xapps/screen/AppList.xml"/>
+        </screen>
     </screen-facade>
 </moqui-conf>
