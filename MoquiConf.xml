@@ -11,7 +11,7 @@
         </screen>
 
         <screen location="component://webroot/screen/webroot/apps.xml">
-            <subscreens-item name="AppList" menu-title="App List" menu-include="false"
+            <subscreens-item name="AppList" menu-title="Application Dashboard" menu-include="false"
                              location="component://moqui-xapps/screen/AppList.xml"/>
         </screen>
     </screen-facade>
