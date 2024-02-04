@@ -762,7 +762,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
                     <#list headerFieldNode?children as widgetNode><#if widgetNode?node_name != "set">
                         <#assign fieldValue><@widgetTextValue widgetNode/></#assign>
                         <#if fieldValue?has_content>
-                            <span style="white-space:nowrap;"><span class="text-grey"><@fieldTitle headerFieldNode/>:</span> <span class="text-success">${fieldValue}</span></span>
+                            <span style="white-space:nowrap;"><span class="text-grey" v-pre><@fieldTitle headerFieldNode/>:</span> <span class="text-success">${fieldValue}</span></span>
                             <#assign haveFilters = true>
                         </#if>
                     </#if></#list>
@@ -939,7 +939,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
                     <div class="q-pa-md <@getFormBgColor/>">
                     <#if currentFindUrlParms?has_content>
                         <#--<#if activeFormListFind?has_content><hr></#if>-->
-                        <p>${curFindSummary!""}</p>
+                        <p v-pre>${curFindSummary!""}</p>
                         <m-form class="form-inline" id="${formId}_NewFind" action="${formSaveFindUrl}" v-slot:default="formProps"
                                 :fields-initial="{formLocation:'${formListInfo.getSavedFindFullLocation()}',_findDescription:'',<#rt>
                         <#t><#list currentFindUrlParms.keySet() as parmName>'${parmName}':'${Static["org.moqui.util.WebUtilities"].encodeHtmlJsSafe(currentFindUrlParms.get(parmName)!)}',</#list>}">
@@ -1150,7 +1150,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
 
         <#if isHeaderDialog>
         <tr class="bg-grey-2"><th colspan="${numColumns}" style="font-weight: normal" class="text-left">
-            <span class="text-subtitle2 text-secondary">${ec.getL10n().localize("Current Search Conditions")}:</span>${curFindSummary!""}
+            <span class="text-subtitle2 text-secondary">${ec.getL10n().localize("Current Search Conditions")}:</span><span v-pre>${curFindSummary!""}</span>
             <#--<#if haveFilters>
                 <#assign hiddenParameterMap = sri.getFormHiddenParameters(formNode)>
                 <#assign hiddenParameterKeys = hiddenParameterMap.keySet()>
