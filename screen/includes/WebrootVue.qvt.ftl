@@ -153,6 +153,17 @@ along with this software (see the LICENSE.md file). If not, see
                                    :icon="(subscreen.imageType == 'icon')?subscreen.image:'img:' + subscreen.image"
                                    :class="{'bg-secondary':subscreen.active}" :to="subscreen.pathWithParams" :label="subscreen.title">
                             </q-btn>
+                            <!--Use following code to fix "Cannot read properties of undefined (reading 'catch')"-->
+                            <!--<router-link :to="subscreen.pathWithParams" tag="a" class="q-btn items-center" :class="{'bg-secondary':subscreen.active}">
+                                <q-icon :name="(subscreen.imageType == 'icon')?subscreen.image:'img:' + subscreen.image" size="13px"></q-icon>
+                                <p class="sign-in">{{subscreen.title}}</p>
+                            </router-link>-->
+                            <!-- <router-link :to="subscreen.pathWithParams">
+                                <q-btn stretch flat stack no-caps size="13px" class="ellipsis"
+                                       :icon="(subscreen.imageType == 'icon')?subscreen.image:'img:' + subscreen.image"
+                                       :class="{'bg-secondary':subscreen.active}" :label="subscreen.title">
+                                </q-btn>
+                            </router-link>-->
                         </template>
                     </template>
                 </template>
