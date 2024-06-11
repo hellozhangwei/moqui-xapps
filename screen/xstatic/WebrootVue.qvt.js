@@ -142,9 +142,13 @@ moqui.handleAjaxError = function(jqXHR, textStatus, errorThrown, responseText) {
 /* Override moqui.notifyGrowl */
 moqui.notifyGrowl = function(jsonObj) {
     if (!jsonObj) return;
-    // TODO: jsonObj.link, jsonObj.icon
-    moqui.webrootVue.$q.notify($.extend({}, moqui.notifyOptsInfo, { type:jsonObj.type, message:jsonObj.title }));
-    moqui.webrootVue.addNotify(jsonObj.title, jsonObj.type);
+    // TODO: jsonObj.icon
+    moqui.webrootVue.$q.notify($.extend({}, moqui.notifyOptsInfo, { type:jsonObj.type, message:jsonObj.title,
+        actions: [
+            { label: 'View', color: 'white', handler: function () { moqui.webrootVue.setUrl(jsonObj.link); } }
+        ]
+    }));
+    moqui.webrootVue.addNotify(jsonObj.title, jsonObj.type, jsonObj.link, jsonObj.icon);
 };
 
 /* ========== component loading methods ========== */
@@ -1391,6 +1395,7 @@ Vue.component('m-date-time', {
         // TODO if (format === "YYYY-MM-DD HH:mm") { jqEl.find('input').inputmask("yyyy-mm-dd hh:mm", { clearIncomplete:false, clearMaskOnLostFocus:true, showMaskOnFocus:true, showMaskOnHover:false, removeMaskOnSubmit:false }); }
     }
 });
+
 moqui.dateOffsets = [{value:'0',label:'This'},{value:'-1',label:'Last'},{value:'1',label:'Next'},
     {value:'-2',label:'-2'},{value:'2',label:'+2'},{value:'-3',label:'-3'},{value:'-4',label:'-4'},{value:'-6',label:'-6'},{value:'-12',label:'-12'}];
 moqui.datePeriods = [{value:'day',label:'Day'},{value:'7d',label:'7 Days'},{value:'30d',label:'30 Days'},{value:'week',label:'Week'},{value:'weeks',label:'Weeks'},
@@ -1768,7 +1773,7 @@ Vue.component('m-drop-down', {
 
             // console.warn("curOptions updated " + this.name + " allowEmpty " + this.allowEmpty + " value '" + this.value + "' " + " isInNewOptions " + isInNewOptions + ": " + JSON.stringify(options));
             if (!isInNewOptions) {
-                if (!this.allowEmpty && !this.multiple && options && options.length && options[0].value && (!this.requiredManualSelect || options.length === 1)) {
+                if (!this.allowEmpty && !this.multiple && options && options.length && options[0].value && (!this.requiredManualSelect || (!this.submitOnSelect && options.length === 1))) {
                     // simulate normal select behavior with no empty option (not allowEmpty) where first value is selected by default
                     // console.warn("checkCurrentValue setting " + this.name + " to " + options[0].value + " options " + options.length);
                     this.$emit('input', options[0].value);
@@ -2327,6 +2332,9 @@ moqui.webrootVue = new Vue({
             if (contComp) { contComp.reload(); } else { console.error("Container with ID " + contId + " not found, not reloading"); }},
         loadContainer: function(contId, url) { var contComp = this.activeContainers[contId];
             if (contComp) { contComp.load(url); } else { console.error("Container with ID " + contId + " not found, not loading url " + url); }},
+        hideContainer: function(contId) {
+            var contComp = this.activeContainers[contId];
+            if (contComp) { contComp.hide(); } else { console.error("Container with ID " + contId + " not found, not hidding"); }},
 
         addNavPlugin: function(url) { var vm = this; moqui.loadComponent(this.appRootPath + url, function(comp) { vm.navPlugins.push(comp); }) },
         addNavPluginsWait: function(urlList, urlIndex) { if (urlList && urlList.length > urlIndex) {
@@ -2345,13 +2353,13 @@ moqui.webrootVue = new Vue({
             this.urlListeners.push(urlListenerFunction);
         },
 
-        addNotify: function(message, type) {
+        addNotify: function(message, type, link, icon) {
             var histList = this.notifyHistoryList.slice(0);
             var nowDate = new Date();
             var nh = nowDate.getHours(); if (nh < 10) nh = '0' + nh;
             var nm = nowDate.getMinutes(); if (nm < 10) nm = '0' + nm;
             // var ns = nowDate.getSeconds(); if (ns < 10) ns = '0' + ns;
-            histList.unshift({message:message, type:type, time:(nh + ':' + nm)}); //  + ':' + ns
+            histList.unshift({message:message, type:type, time:(nh + ':' + nm), link:link, icon:icon}); //  + ':' + ns
             while (histList.length > 25) { histList.pop(); }
             this.notifyHistoryList = histList;
         },
@@ -2395,16 +2403,29 @@ moqui.webrootVue = new Vue({
             // update the session token, new session after login (along with xhrFields:{withCredentials:true} for cookie)
             var sessionToken = jqXHR.getResponseHeader("X-CSRF-Token");
             if (sessionToken && sessionToken.length && sessionToken !== this.moquiSessionToken) {
-                console.log("Updating session token")
+                console.log("Updating session token from jqXHR, sending to BroadcastChannel")
+                this.moquiSessionToken = sessionToken;
+                this.sessionTokenBc.postMessage(sessionToken);
+            }
+        },
+        receiveBcCsrfToken: function(event) {
+            var sessionToken = event.data;
+            if (sessionToken && sessionToken.length && this.moquiSessionToken !== sessionToken) {
+                console.log("Updating session token from BroadcastChannel")
                 this.moquiSessionToken = sessionToken;
             }
         },
         reLoginCheckShow: function() {
+            this.reLoginShowDialog();
+            /* NOTE DEJ-2022-12 removing use of the userInfo endpoint which is commented out for security reasons:
             // before showing the Re-Login dialog do a GET request without session token to see if there is a new one
             $.ajax({ type:'GET', url:(this.appRootPath + '/rest/userInfo'),
                 error:this.reLoginCheckResponseError, success:this.reLoginCheckResponseSuccess,
                 dataType:'json', headers:{Accept:'application/json'}, xhrFields:{withCredentials:true} });
+
+             */
         },
+        /* NOTE DEJ-2022-12 removing use of the userInfo endpoint which is commented out for security reasons:
         reLoginCheckResponseSuccess: function(resp, status, jqXHR) {
             if (resp.username && resp.sessionToken) {
                 this.moquiSessionToken = resp.sessionToken;
@@ -2423,7 +2444,7 @@ moqui.webrootVue = new Vue({
             } else {
                 var resp = responseText ? responseText : jqXHR.responseText;
                 var respObj;
-                try { respObj = JSON.parse(resp); } catch (e) { /* ignore error, don't always expect it to be JSON */ }
+                try { respObj = JSON.parse(resp); } catch (e) { } // ignore error, don't always expect it to be JSON
                 if (respObj && moqui.isPlainObject(respObj)) {
                     moqui.notifyMessages(respObj.messageInfos, respObj.errors, respObj.validationErrors);
                 } else if (resp && moqui.isString(resp) && resp.length) {
@@ -2431,6 +2452,7 @@ moqui.webrootVue = new Vue({
                 }
             }
         },
+        */
         reLoginShowDialog: function() {
             // make sure there is no MFA Data (would skip the login with password step)
             this.reLoginMfaData = null;
@@ -2601,6 +2623,9 @@ moqui.webrootVue = new Vue({
         this.$q.dark.set(confDarkMode === "true");
 
         this.notificationClient = new moqui.NotificationClient((location.protocol === 'https:' ? 'wss://' : 'ws://') + this.appHost + this.appRootPath + "/notws");
+        // open BroadcastChannel to share session token between tabs/windows on the same domain (see https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API)
+        this.sessionTokenBc = new BroadcastChannel("SessionToken");
+        this.sessionTokenBc.onmessage = this.receiveBcCsrfToken;
 
         var navPluginUrlList = [];
         $('.confNavPluginUrl').each(function(idx, el) { navPluginUrlList.push($(el).val()); });
@@ -2673,6 +2698,9 @@ moqui.webrootVue = new Vue({
                 }
             });
         }
+    },
+    beforeDestroy: function() {
+        this.sessionTokenBc.close();
     }
 
 });
