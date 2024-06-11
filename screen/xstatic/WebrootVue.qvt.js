@@ -2722,7 +2722,7 @@ moqui.webrootRouter = {
         return { location:location, route:route, href:moqui.makeHref(location), normalizedTo:location, resolved:route }
     },
     replace: function(location, onComplete, onAbort) { moqui.webrootVue.setUrl(location, null, onComplete); },
-    push: function(location, onComplete, onAbort) { moqui.webrootVue.setUrl(location, null, onComplete); }
+    push: function(location, onComplete, onAbort) { moqui.webrootVue.setUrl(location, null, onComplete); return {location:location, catch:function(){}} }
 }
 Object.defineProperty(Vue.prototype, '$router', {
     get: function get() { return moqui.webrootRouter; }
