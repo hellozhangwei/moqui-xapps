@@ -33,7 +33,7 @@ along with this software (see the LICENSE.md file). If not, see
     <#-- to build a layout use the handy Quasar tool: https://quasar.dev/layout-builder -->
     <q-layout view="hHh LpR fFf">
         <q-header reveal bordered class="${headerClass}" id="top" style="border-bottom:none">
-            <q-toolbar class="bg-white text-primary">
+            <q-toolbar class="bg-white text-primary gt-xs">
                 <#assign headerLogoList = sri.getThemeValues("STRT_HEADER_LOGO")>
                 <#if headerLogoList?has_content>
                     <m-link href="/apps">
@@ -142,7 +142,7 @@ along with this software (see the LICENSE.md file). If not, see
                 </q-btn>
             </q-toolbar>
 
-            <q-toolbar id="toolbar2" style="height:60px;border-bottom:solid 5px #26a69a;background: linear-gradient(145deg,#1976d2 11%,#0f477e 75%) !important">
+            <q-toolbar id="toolbar2" style="height:60px;border-bottom:solid 5px #26a69a;background: linear-gradient(145deg,#1976d2 11%,#0f477e 75%) !important" class="gt-xs">
                 <template v-if="navMenuList[0]">
                     <q-btn flat stretch :to="navMenuList[0].path"><q-icon name="apps" size="md"></q-icon><q-tooltip>Applications</q-tooltip></q-btn>
                 </template>
@@ -205,8 +205,8 @@ along with this software (see the LICENSE.md file). If not, see
             <div class="q-pa-sm bg-white" style="font-size:12px">
                 <q-icon name="home" color="grey"></q-icon>
                 <template v-for="(navMenuItem, menuIndex) in navMenuList">
-                    <m-link :href="getNavHref(menuIndex)" class="gt-xs text-grey">{{navMenuItem.title}}</m-link>
-                    <q-icon v-if="menuIndex < (navMenuList.length - 1)" name="chevron_right" color="grey" class="gt-xs"></q-icon>
+                    <m-link :href="getNavHref(menuIndex)" class="text-grey">{{navMenuItem.title}}</m-link>
+                    <q-icon v-if="menuIndex < (navMenuList.length - 1)" name="chevron_right" color="grey"></q-icon>
                 </template>
             </div>
         </q-header>
