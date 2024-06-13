@@ -33,6 +33,8 @@ along with this software (see the LICENSE.md file). If not, see
     <#-- to build a layout use the handy Quasar tool: https://quasar.dev/layout-builder -->
     <q-layout view="hHh LpR fFf">
         <q-header reveal bordered class="${headerClass}" id="top" style="border-bottom:none">
+            <q-btn dense flat icon="menu" @click="toggleLeftOpen()" class="lt-sm"></q-btn>
+
             <q-toolbar class="bg-white text-primary gt-xs">
                 <#assign headerLogoList = sri.getThemeValues("STRT_HEADER_LOGO")>
                 <#if headerLogoList?has_content>
@@ -226,6 +228,11 @@ along with this software (see the LICENSE.md file). If not, see
                 </template>
             </q-list>
         </q-drawer>-->
+
+        <q-drawer v-model="leftOpen" side="left" overlay bordered >
+            <q-btn dense flat icon="menu" @click="toggleLeftOpen()" class="lt-sm"></q-btn>
+            <q-list dense padding><m-menu-nav-item :menu-index="0"></m-menu-nav-item></q-list>
+        </q-drawer>
 
         <q-page-container class="q-ma-sm" @click="leftOpen=false"><q-page>
             <m-subscreens-active></m-subscreens-active>
