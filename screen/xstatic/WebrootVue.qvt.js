@@ -938,6 +938,8 @@ Vue.component('m-form', {
         // TODO: find other way to get button clicked (Vue event?)
         // watch button clicked
         jqEl.find('button[type="submit"], input[type="submit"], input[type="image"]').on('click', function() { vm.buttonClicked = this; });
+
+        vm.$root.currentForm = this;
     }
 });
 Vue.component('m-form-link', {
@@ -2213,9 +2215,25 @@ moqui.webrootVue = new Vue({
         lastNavTime:Date.now(), loading:0, currentLoadRequest:null, activeContainers:{}, urlListeners:[],
         moquiSessionToken:"", appHost:"", appRootPath:"", userId:"", username:"", locale:"en",
         reLoginShow:false, reLoginPassword:null, reLoginMfaData:null, reLoginOtp:null,
-        notificationClient:null, qzVue:null, leftOpen:false, moqui:moqui, topMenuBreakPoint:10},
+        notificationClient:null, qzVue:null, leftOpen:false, moqui:moqui, topMenuBreakPoint:10, currentForm:null},
     methods: {
         setUrl: function(url, bodyParameters, onComplete) {
+            if(this.currentForm) {
+                if(this.currentForm.buttonClicked) {
+                    //if submit button is clicked do nothing
+                } else {
+                    if (this.currentForm.hasFieldsChanged) {
+                        if (confirm("Do you want to leave without saving? Click Cancel to stay here. Click OK to lost changes")) {
+                            this.currentForm = null
+                            //click confirm to leave without saving
+                        } else {
+                           //click cancel to stay on the form, will not set url
+                            return
+                        }
+                      }
+                 }
+            }
+
             // cancel current load if needed
             if (this.currentLoadRequest) {
                 console.log("Aborting current page load currentLinkUrl " + this.currentLinkUrl + " url " + url);
