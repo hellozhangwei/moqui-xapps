@@ -2220,7 +2220,7 @@ moqui.webrootVue = new Vue({
         setUrl: function(url, bodyParameters, onComplete) {
 
             var i = this.currentForms.length
-            if(this.currentForms.length > 0) {
+            if(i > 0) {
                 while (i--) {
                     var currentForm = this.currentForms[i]
 
@@ -2230,7 +2230,7 @@ moqui.webrootVue = new Vue({
                         continue;
                     } else {
                         if (currentForm.hasFieldsChanged) {
-                            if (confirm("Do you want to leave without saving? Click Cancel to stay here. Click OK to lost changes")) { //currentForm.$el.name
+                            if (confirm("Do you want to leave without saving? Click Cancel to stay here or click OK to leave and lost changes")) { //currentForm.$el.name
                                 this.currentForms.splice(i, 1);
                                 //click confirm to leave without saving
                             } else {
