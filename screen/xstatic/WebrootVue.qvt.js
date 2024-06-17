@@ -939,7 +939,7 @@ Vue.component('m-form', {
         // watch button clicked
         jqEl.find('button[type="submit"], input[type="submit"], input[type="image"]').on('click', function() { vm.buttonClicked = this; });
 
-        vm.$root.currentForm = this;
+        vm.$root.currentForms.push(this);
     }
 });
 Vue.component('m-form-link', {
@@ -2215,23 +2215,31 @@ moqui.webrootVue = new Vue({
         lastNavTime:Date.now(), loading:0, currentLoadRequest:null, activeContainers:{}, urlListeners:[],
         moquiSessionToken:"", appHost:"", appRootPath:"", userId:"", username:"", locale:"en",
         reLoginShow:false, reLoginPassword:null, reLoginMfaData:null, reLoginOtp:null,
-        notificationClient:null, qzVue:null, leftOpen:false, moqui:moqui, topMenuBreakPoint:10, currentForm:null},
+        notificationClient:null, qzVue:null, leftOpen:false, moqui:moqui, topMenuBreakPoint:10, currentForms:[]},
     methods: {
         setUrl: function(url, bodyParameters, onComplete) {
-            if(this.currentForm) {
-                if(this.currentForm.buttonClicked) {
-                    //if submit button is clicked do nothing
-                } else {
-                    if (this.currentForm.hasFieldsChanged) {
-                        if (confirm("Do you want to leave without saving? Click Cancel to stay here. Click OK to lost changes")) {
-                            this.currentForm = null
-                            //click confirm to leave without saving
-                        } else {
-                           //click cancel to stay on the form, will not set url
-                            return
+
+            var i = this.currentForms.length
+            if(this.currentForms.length > 0) {
+                while (i--) {
+                    var currentForm = this.currentForms[i]
+
+                    if(currentForm.buttonClicked) {
+                        //if submit button is clicked do nothing
+                        this.currentForms.splice(i, 1);
+                        continue;
+                    } else {
+                        if (currentForm.hasFieldsChanged) {
+                            if (confirm("Do you want to leave without saving? Click Cancel to stay here. Click OK to lost changes")) { //currentForm.$el.name
+                                this.currentForms.splice(i, 1);
+                                //click confirm to leave without saving
+                            } else {
+                               //click cancel to stay on the form, will not set url
+                                return
+                            }
                         }
-                      }
-                 }
+                     }
+                }
             }
 
             // cancel current load if needed
