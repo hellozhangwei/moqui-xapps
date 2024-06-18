@@ -940,6 +940,9 @@ Vue.component('m-form', {
         jqEl.find('button[type="submit"], input[type="submit"], input[type="image"]').on('click', function() { vm.buttonClicked = this; });
 
         vm.$root.currentForms.push(this);
+    },
+    beforeDestroy: function() {
+        this.$root.currentForms.pop(this);
     }
 });
 Vue.component('m-form-link', {
