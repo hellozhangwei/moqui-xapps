@@ -525,6 +525,7 @@ ${sri.renderIncludeScreen(.node["@location"], .node["@share-scope"]!)}
             <#t><#if formSingleNode["@background-reload-id"]?has_content> submit-reload-id="${formSingleNode["@background-reload-id"]}"</#if>
             <#t><#if formSingleNode["@background-hide-id"]?has_content> submit-hide-id="${formSingleNode["@background-hide-id"]}"</#if>
             <#t><#if formSingleNode["@exclude-empty-fields"]! == "true"> :exclude-empty-fields="true"</#if>
+            <#t><#if formSingleNode["@unsaved-warning"]! == "true"> :unsaved-warning="true"</#if>
             <#lt><#if _formListSelectedForm!false> :parentCheckboxSet="formProps"</#if>
             <#if fieldsJsName?has_content> v-slot:default="formProps" :fields-initial="${Static["org.moqui.util.WebUtilities"].fieldValuesEncodeHtmlJsSafe(sri.getFormFieldValues(formSingleNode))}"</#if>>
     </#if>

@@ -717,6 +717,7 @@ Vue.component('m-form', {
     mixins:[moqui.checkboxSetMixin],
     props: { fieldsInitial:Object, action:{type:String,required:true}, method:{type:String,'default':'POST'},
         submitMessage:String, submitReloadId:String, submitHideId:String, focusField:String, noValidate:Boolean,
+        unsavedWarning:Boolean,
         excludeEmptyFields:Boolean, parentCheckboxSet:Object },
         data: function() { return { fields:Object.assign({}, this.fieldsInitial),
             fieldsOriginal:Object.assign({}, this.fieldsInitial), buttonClicked:null }},
@@ -2232,7 +2233,7 @@ moqui.webrootVue = new Vue({
                         this.currentForms.splice(i, 1);
                         continue;
                     } else {
-                        if (currentForm.hasFieldsChanged) {
+                        if (currentForm.hasFieldsChanged && currentForm.unsavedWarning) {
                             if (confirm("Do you want to leave without saving? Click Cancel to stay here or click OK to leave and lost changes")) { //currentForm.$el.name
                                 this.currentForms.splice(i, 1);
                                 //click confirm to leave without saving
